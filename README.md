@@ -1,39 +1,85 @@
-![CI logo](https://codeinstitute.s3.amazonaws.com/fullstack/ci_logo_small.png)
+# Take Control API
 
-Welcome,
+Developer: Georgina Carlisle
 
-This is the Code Institute student template for Codeanywhere. If you are using Gitpod then you need [this template](https://github.com/Code-Institute-Org/gitpod-full-template) instead.  We have preinstalled all of the tools you need to get started. It's perfectly ok to use this template as the basis for your project submissions.
+An API providing full CRUD functionality for task management data that includes setting focus areas and goals. This API utilises the Django Rest Framework and was created to provide backend functionality for the Take Control application.
 
-You can safely delete this README.md file, or change it for your own project. Please do read it at least once, though! It contains some important information about Codeanywhere and the extensions we use. Some of this information has been updated since the video content was created. The last update to this file was: **August 30th, 2023**
+Take Control API live link:
+Take Control repository:
+Take Control App:
 
-## Codeanywhere Reminders
+## Contents
 
-To run a frontend (HTML, CSS, Javascript only) application in Codeanywhere, in the terminal, type:
+[Features](#features)
 
-`python3 -m http.server`
+[Design](#design)
 
-A button should appear to click: _Open Preview_ or _Open Browser_.
+[Agile Methodology](#agile-methodology)
 
-To run a frontend (HTML, CSS, Javascript only) application in Codeanywhere with no-cache, you can use this alias for `python3 -m http.server`.
+[Frameworks and Libraries](#frameworks-and-libraries)
 
-`http_server`
+[Tools and Technologies](#tools-and-technologies)
 
-To run a backend Python file, type `python3 app.py`, if your Python file is named `app.py` of course.
+[Testing and Validation](#testing-and-validation)
 
-A button should appear to click: _Open Preview_ or _Open Browser_.
+[Bugs and Fixes](#bugs-and-fixes)
 
-In Codeanywhere you have superuser security privileges by default. Therefore you do not need to use the `sudo` (superuser do) command in the bash terminal in any of the lessons.
+[Deployment](#deployment)
 
-To log into the Heroku toolbelt CLI:
+[Cloning this repository](#cloning-this-repository)
 
-1. Log in to your Heroku account and go to _Account Settings_ in the menu under your avatar.
-2. Scroll down to the _API Key_ and click _Reveal_
-3. Copy the key
-4. In Codeanywhere, from the terminal, run `heroku_config`
-5. Paste in your API key when asked
+[Forking a branch](#forking-a-branch)
 
-You can now use the `heroku` CLI program - try running `heroku apps` to confirm it works. This API key is unique and private to you so do not share it. If you accidentally make it public then you can create a new one with _Regenerate API Key_.
+[Credits](#credits)
+
+[Acknowledgements](#acknowledgements)
 
 ---
 
-Happy coding!
+## Features
+
+[Return to contents list](#contents)
+
+## Design
+
+[Return to contents list](#contents)
+
+## Agile Methodology
+
+[Return to contents list](#contents)
+
+## Frameworks and Libraries
+
+[Return to contents list](#contents)
+
+## Tools and Technologies
+
+[Return to contents list](#contents)
+
+## Testing and Validation
+
+[Return to contents list](#contents)
+
+## Bugs and Fixes
+
+[Return to contents list](#contents)
+
+## Deployment
+
+[Return to contents list](#contents)
+
+## Cloning this repository
+
+[Return to contents list](#contents)
+
+## Forking a branch
+
+[Return to contents list](#contents)
+
+## Credits
+
+[Return to contents list](#contents)
+
+## Acknowledgements
+
+[Return to contents list](#contents)
