@@ -52,6 +52,8 @@ Only trusted urls, specified directly within the API, will be able to make reque
 
 User authentication will be included within the API, with read, update and delete functionality initially only available to the owner of the data. Later functionality will allow for access to be granted to team member users.
 
+Secret keys etc. will be hidden and Debug set to False for the deployed api.
+
 ### Scope
 
 The scope of this API links directly to the user stories set out in the Take Control repository. From these the following key models were defined:
