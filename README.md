@@ -119,6 +119,8 @@ Githubs project board was used to keep track of tasks to be completed, with gith
 
 ## Testing and Validation
 
+See [TESTING.md](TESTING.md) for all testing and validation.
+
 [Return to contents list](#contents)
 
 ## Bugs and Fixes
