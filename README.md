@@ -5,7 +5,7 @@ Developer: Georgina Carlisle
 An API providing full CRUD functionality for task management data that includes setting focus areas and goals. This API utilises the Django Rest Framework and was created to provide backend functionality for the Take Control application.
 
 Take Control API live link:
-Take Control App repository:
+[Take Control App repository](https://github.com/GeorginaCarlisle/take-control-frontend-app)
 Take Control App live link:
 
 ## Contents
@@ -78,7 +78,7 @@ Please note that the end point plan does not contain endpoints for the team and 
 
 ## Agile Methodology
 
-Agile values and principles were followed in the creation of this API in partnership with the Take Control application. See Take Control application for more details.
+Agile values and principles were followed in the creation of this API in partnership with the [Take Control Application](https://github.com/GeorginaCarlisle/take-control-frontend-app).
 
 ### Prioritisation
 
@@ -107,7 +107,13 @@ Could have:
 
 ### Information Radiator
 
-Githubs project board was used to keep track of tasks to be completed, with github issues used to define key tasks. These tasks were then given success criteria and further split up into smaller tasks.
+Githubs project board was used to keep track of tasks to be completed, with github issues used to define key tasks. Tasks were then given success criteria and further split up into smaller tasks.
+
+The project board was also shared by the [Take Control App repository](https://github.com/GeorginaCarlisle/take-control-frontend-app). This allowed both frontend and backend tasks to be viewed together and worked on in an order that allowed me to push for the best overall product that could be achieved within the time frame.
+
+### Time Boxing
+
+Developement of the project was split into four time boxes/iterations. Each iteration was set to a period of one week and had a set focus. This allowed for judgements to be made for each task as to how far to push perfection and how quickly to move on, so that I was able to bring the project together into a finished state prior to the deadline. [See details in the frontend repository](https://github.com/GeorginaCarlisle/take-control-frontend-app?tab=readme-ov-file#agile-methodology).
 
 [Return to contents list](#contents)
 
