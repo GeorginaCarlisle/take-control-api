@@ -8,3 +8,5 @@ node_modules/
 .github/
 cloudinary_python.txt
 .DS_store
+.venv
+.python-version
