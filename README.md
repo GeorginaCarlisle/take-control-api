@@ -193,7 +193,7 @@ See [TESTING.md](TESTING.md) for all testing and validation.
 
 ## Credits
 
-[Code Institute](https://codeinstitute.net/) - "Django Rest" learning materials followed during the initial set-up of this project, installing dependencies, setting up user registration and authentication, and deploying to Heroku.
+[Code Institute](https://codeinstitute.net/) - "Django Rest" learning materials followed during the initial set-up of this project, installing dependencies, setting up user registration and authentication, setting up pagination and deploying to Heroku.
 
 [Return to contents list](#contents)
 
