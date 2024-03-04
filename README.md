@@ -16,6 +16,8 @@ Take Control App live link:
 
 [Agile Methodology](#agile-methodology)
 
+[Languages](#languages)
+
 [Frameworks and Libraries](#frameworks-and-libraries)
 
 [Tools and Technologies](#tools-and-technologies)
@@ -117,11 +119,45 @@ Developement of the project was split into four time boxes/iterations. Each iter
 
 [Return to contents list](#contents)
 
+## Languages
+
+Python
+
 ## Frameworks and Libraries
+
+[Django 3.2](https://www.djangoproject.com/) - A high-level Python web framework that encourages rapid development and clean, pragmatic design.
+
+[Django Rest Framework 3.14](https://www.django-rest-framework.org/) - A powerful a flexible toolkit for building Web APIs.
+
+[dj_database_url 2.1](https://pypi.org/project/dj-database-url/) - A simple Django utility. Used to configure the API to connect up to an outside database using it's URL.
+
+[Psycopg2-binary 2.9](https://pypi.org/project/psycopg2-binary/) - A PostgreSQL database adapter for the Python programming language. The stand-alone binary package was chosen due to the normal psycopg2 throwing errors.
+
+[Gunicorn 21.2](https://gunicorn.org/) - A Python WSGI HTTP Server for UNIX.
+
+[Cloudinary 1.39 and Cloudinary storage 0.3](https://cloudinary.com/) - Allowing connection with Cloudinary (see tools and tech).
+
+[Pillow 8.2](https://pypi.org/project/pillow/8.2.0/) - A Python imaging library that includes image processing capabilities.
+
+[django-cors-headers 4.3](https://pypi.org/project/django-cors-headers/) - A Django application for handling the server headers required for Cross-Origin Resource Sharing (CORS)
 
 [Return to contents list](#contents)
 
 ## Tools and Technologies
+
+[Code Institute Template](https://github.com/Code-Institute-Org/ci-full-template) - Provided me with a familiar base from which to build my project.
+
+[GitHub](https://github.com/)  - Stores the repository for this project so that it can be viewed by others. Github issues and projects were also utilised, see [Agile Methodology](#agile-methodology).
+
+[git](https://git-scm.com/) - Controlled the building of this project in a series of versions which can be tracked.
+
+[Visual Studio Code](https://code.visualstudio.com/) - The editor in which this project has been built.
+
+[LucidChart](https://lucid.co/) - Used to plan the models to be included in the database and how they connect together.
+
+[Cloudinary](https://cloudinary.com/) - External API platform used to host images.
+
+[Code Institute database](https://dbs.ci-dbs.net/) - Providing an external PostgreSQL database
 
 [Return to contents list](#contents)
 
@@ -149,8 +185,12 @@ See [TESTING.md](TESTING.md) for all testing and validation.
 
 ## Credits
 
+[Code Institute](https://codeinstitute.net/) - "Django Rest" learning materials followed during the initial set-up of this project, installing dependencies and deploying to Heroku.
+
 [Return to contents list](#contents)
 
 ## Acknowledgements
+
+[Code Institute](https://codeinstitute.net/) - The majority of the coding skills, knowledge and understanding showcased in this project have been learnt through the 'Diploma of Full stack software development' that I am completing with Code Institute.
 
 [Return to contents list](#contents)
