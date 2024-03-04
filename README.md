@@ -143,6 +143,8 @@ Python
 
 [dj-rest-auth package 2.1](https://dj-rest-auth.readthedocs.io/en/latest/installation.html) - A set of REST API endpoints to handle User Registration and Authentication tasks.
 
+[djangorestframework-simplejwt package 4.7](https://pypi.org/project/djangorestframework-simplejwt/) - A JSON Web Token authentication plugin for the Django REST Framework.
+
 [Return to contents list](#contents)
 
 ## Tools and Technologies
@@ -170,6 +172,10 @@ See [TESTING.md](TESTING.md) for all testing and validation.
 [Return to contents list](#contents)
 
 ## Bugs and Fixes
+
+| # | Bug | What was tried | Fix |
+| --- | --- | --- | --- |
+| 1 | In development mode with local host and db.sqlite3, when registering a new user their is a connection refused error originating in socket.py. Note: Form validation does work and a user is created. | Time was spent checking all related settings and exploring the error code. I also manufactored the same scenario using my walkthrough code (which I know deploys well and works as expected with the frontend) and it also threw the same error. This has lead me to the thought that this might be directly connected with the db.sqlite3 database and the local host set-up and may not caused any issues in production. | Leave error for now. If any issues are caused with the deployed API and external database I will then re-explore what is causing the error. |
 
 [Return to contents list](#contents)
 
