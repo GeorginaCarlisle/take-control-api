@@ -141,6 +141,8 @@ Python
 
 [django-cors-headers 4.3](https://pypi.org/project/django-cors-headers/) - A Django application for handling the server headers required for Cross-Origin Resource Sharing (CORS)
 
+[dj-rest-auth package 2.1](https://dj-rest-auth.readthedocs.io/en/latest/installation.html) - A set of REST API endpoints to handle User Registration and Authentication tasks.
+
 [Return to contents list](#contents)
 
 ## Tools and Technologies
@@ -185,7 +187,7 @@ See [TESTING.md](TESTING.md) for all testing and validation.
 
 ## Credits
 
-[Code Institute](https://codeinstitute.net/) - "Django Rest" learning materials followed during the initial set-up of this project, installing dependencies and deploying to Heroku.
+[Code Institute](https://codeinstitute.net/) - "Django Rest" learning materials followed during the initial set-up of this project, installing dependencies, setting up user registration and authentication, and deploying to Heroku.
 
 [Return to contents list](#contents)
 

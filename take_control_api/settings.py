@@ -56,6 +56,13 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'cloudinary',
     'rest_framework',
+    'rest_framework.authtoken',
+    'dj_rest_auth',
+    'django.contrib.sites',
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
+    'dj_rest_auth.registration',
     'corsheaders',
 ]
 
