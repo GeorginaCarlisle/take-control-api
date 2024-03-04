@@ -1,9 +1,17 @@
+from django.contrib.humanize.templatetags.humanize import naturaltime
 from rest_framework import serializers
 from .models import Focus
 
 class FocusSerializer(serializers.ModelSerializer):
+    """
+    Serializer for the Focus model. It changes owner.id into owner.username,
+    adds an extra field is_owner, prevents large images being saved to the 
+    database and changes date fields into an easier format
+    """
     owner = serializers.ReadOnlyField(source='owner.username')
     is_owner = serializers.SerializerMethodField()
+    created_at = serializers.SerializerMethodField()
+    updated_at = serializers.SerializerMethodField()
 
     def validate_image(self, value):
         """
@@ -24,7 +32,18 @@ class FocusSerializer(serializers.ModelSerializer):
             )
         return value
 
-
     def get_is_owner(self, obj):
         request = self.context['request']
         return request.user == obj.owner
+    
+    def get_created_at(self, obj):
+        return naturaltime(obj.created_at)
+
+    def get_updated_at(self, obj):
+        return naturaltime(obj.updated_at)
+    
+    class Meta:
+        model = Focus
+        fields = [
+             'id', 'owner', 'created_at', 'updated_at', 'name', 'rank', 'why', 'image'
+        ]
