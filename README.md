@@ -211,4 +211,8 @@ The following code from [Code Institute's](https://codeinstitute.net/) Django re
 
 [Code Institute](https://codeinstitute.net/) - The majority of the coding skills, knowledge and understanding showcased in this project have been learnt through the 'Diploma of Full stack software development' that I am completing with Code Institute.
 
+Django Rest Framework documentation was used throughout the building of this project, in particular to support with:
+
+- [Permissions](https://www.django-rest-framework.org/api-guide/permissions/#permissions) including setting a default permission class and writing a custom permission.
+
 [Return to contents list](#contents)

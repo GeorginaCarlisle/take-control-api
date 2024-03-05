@@ -2,6 +2,7 @@ from django.shortcuts import render
 from .models import Focus
 from .serializers import FocusSerializer
 from rest_framework import generics
+from take_control_api.permissions import OwnerOnly
 
 
 class FocusList(generics.ListCreateAPIView):
@@ -24,5 +25,5 @@ class FocusDetail(generics.RetrieveUpdateDestroyAPIView):
     View to return a specific focus where pk will be the id of the post
     """
     serializer_class = FocusSerializer
-    queryset = Focus.objects.all()   
-
+    permission_classes = [OwnerOnly]
+    queryset = Focus.objects.all()
