@@ -23,7 +23,7 @@ class FocusList(generics.ListCreateAPIView):
         Pulls all of the focus instances that are linked to the current user
         and only focus instances that are linked to the current user
         """
-        return self.request.user.focus.all()
+        return self.request.user.focus.all().order_by('rank', 'created_at').reverse()
 
 
 class FocusDetail(generics.RetrieveUpdateDestroyAPIView):
