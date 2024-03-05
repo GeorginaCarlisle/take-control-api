@@ -11,13 +11,19 @@ class FocusList(generics.ListCreateAPIView):
     also create a new focus area
     """
     serializer_class = FocusSerializer
-    queryset = Focus.objects.all()
 
     def perform_create(self, serializer):
         """
         Adds owner data to the object before it is saved
         """
         serializer.save(owner=self.request.user)
+    
+    def get_queryset(self):
+        """
+        Pulls all of the focus instances that are linked to the current user
+        and only focus instances that are linked to the current user
+        """
+        return self.request.user.focus.all()
 
 
 class FocusDetail(generics.RetrieveUpdateDestroyAPIView):

@@ -214,5 +214,6 @@ The following code from [Code Institute's](https://codeinstitute.net/) Django re
 Django Rest Framework documentation was used throughout the building of this project, in particular to support with:
 
 - [Permissions](https://www.django-rest-framework.org/api-guide/permissions/#permissions) including setting a default permission class and writing a custom permission.
+- [Querysets](https://www.django-rest-framework.org/api-guide/viewsets/#modelviewset) and controlling what is being pulled from the database as part of a view.
 
 [Return to contents list](#contents)
