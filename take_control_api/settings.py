@@ -53,6 +53,7 @@ JWT_AUTH_SAMESITE = 'None'
 
 REST_AUTH = {
     'USER_DETAILS_SERIALIZER': 'demo.serializers.UserSerializer',
+    'REGISTER_PERMISSION_CLASSES': ('rest_framework.permissions.AllowAny',),
 }
 
 # Quick-start development settings - unsuitable for production
