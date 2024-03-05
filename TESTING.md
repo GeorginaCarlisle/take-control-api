@@ -16,6 +16,43 @@
 
 ## Manual Testing
 
+Manual tests for all Endpoints have been carried out on the deployed site.
+
+### Authorisation
+
+| url | http request | expected outcome | result |
+| --- | --- | --- | --- |
+| dj-rest-auth/registration/ | POST | New user created | 500 server error thrown. Database correctly updated with new user. |
+| | | Invalid fields handled | PASS |
+| dj-rest-auth/login/ | POST | User Authenticated | PASS |
+| | | Invalid fields handled | PASS |
+| dj-rest-auth/logout/ | POST | User logged out and token object deleted | PASS |
+
+Key notes:
+While registration updates the database correctly a 500 error is thrown. See bug #1 in main readme.
+
+### Focus model
+
+| url | http request | expected outcome | result |
+| --- | --- | --- | --- |
+| focus/ | GET | Unauthorized error for logged out users | PASS |
+| | | list of all logged in user's focus area and non of anyone elses | PASS |
+| | | focus areas ordered by rank first and then by created_at in ascending order | PASS |
+| | POST | Unauthorized error for logged out users | PASS |
+| | | Error message for empty name field | PASS |
+| | | Error message for name over 50 characters | PASS|
+| | | Error message for images too large | PASS |
+| | | new focus created for logged in user | PASS |
+| focus/<int:pk> | GET | Invalid focus request returns 404 | PASS |
+| | | Logged in user can get their focus | PASS |
+| | | Logged in user trying to get a focus that doesn't belong to them returns 403 error | PASS |
+| | | Logged out user cannot make get request 401 error | PASS |
+| | PUT | Logged in user can edit their focus | Fail in deployed API |
+| | DELETE | Logged in user can delete their focus | Fail in deployed API |
+
+Key notes:
+Walkthrough api, which works correctly from frontend also fails in the same way.
+
 [Return to contents list](#contents)
 
 ## Automated Testing
