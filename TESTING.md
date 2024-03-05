@@ -12,6 +12,16 @@
 
 ## Code Validation
 
+All code has been passed through a Python Linter.
+
+| App | file | outcome |
+| --- | --- | --- |
+| focus | models.py | No errors |
+| | serializers.py | No errors |
+| | tests.py | No errors |
+| | urls.py | No errors |
+| |  views.py | No errors |
+
 [Return to contents list](#contents)
 
 ## Manual Testing

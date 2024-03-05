@@ -7,7 +7,7 @@ from take_control_api.permissions import OwnerOnly
 
 class FocusList(generics.ListCreateAPIView):
     """
-    View to return an list of focus areas and 
+    View to return an list of focus areas and
     also create a new focus area
     """
     serializer_class = FocusSerializer
@@ -17,12 +17,12 @@ class FocusList(generics.ListCreateAPIView):
         Adds owner data to the object before it is saved
         """
         serializer.save(owner=self.request.user)
-    
+
     def get_queryset(self):
         """
         Pulls all of the focus instances that are linked to the current user
-        and only focus instances that are linked to the current user.
-        Within this order by rank first (with null last), and then by created_at.
+        and only focus instances that are linked to the current user. Within
+        this order by rank first (with null last), and then by created_at.
         """
         return self.request.user.focus.all().order_by('rank', 'created_at')
 
