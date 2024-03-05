@@ -176,7 +176,8 @@ See [TESTING.md](TESTING.md) for all testing and validation.
 | # | Bug | What was tried | Fix |
 | --- | --- | --- | --- |
 | 1 | In development mode with local host and db.sqlite3, when registering a new user their is a connection refused error originating in socket.py. Note: Form validation does work and a user is created. | Time was spent checking all related settings and exploring the error code. I also manufactored the same scenario using my walkthrough code (which I know deploys well and works as expected with the frontend) and it also threw the same error. This has lead me to the thought that this might be directly connected with the db.sqlite3 database and the local host set-up and may not caused any issues in production. | Leave error for now. If any issues are caused with the deployed API and external database I will then re-explore what is causing the error. |
-| 2 | Default permission 'IsAuthenticated' was preventing unauthenticated users from seeing the root route message and for being able to send a register or login request | First I removed this permission, this solved the initial problem but caused further problems with the list view trying to find a focus for an annoymonous user. I then went back to the django documentation learning about the permission_classes decorators and also the dj-rest-auth documentation. | Default permission reinstated and instead overridden where needed. The root_route overridden with a permission_classes decorator and the AllowAny permission. The registration paths overridden in settings.py within REST_AUTH. |
+| 2 | Default permission 'IsAuthenticated' was preventing unauthenticated users from seeing the root route message and for being able to send a register or login request | First I removed this permission, this solved the initial problem but caused further problems with the list view trying to find a focus for an annoymonous user. I then went back to the django documentation learning about the permission_classes decorators and also the dj-rest-auth documentation. | Default permission reinstated and instead overridden where needed. The root_route overridden with a permission_classes decorator and the AllowAny permission. The registration paths overridden in settings.py within REST_AUTH. This also seemed to fix the login path too. |
+| 3 | The FocusListView for the deployed API is returning the list in the complete opposite order to development. | Research suggested that this might be due to how the production and development databases handle ordering differently. | Queryset code in the view changed. Production now correct and development wrong. |
 
 [Return to contents list](#contents)
 
@@ -218,6 +219,5 @@ Django Rest Framework documentation was used throughout the building of this pro
 - [Querysets](https://www.django-rest-framework.org/api-guide/viewsets/#modelviewset) and controlling what is being pulled from the database as part of a view.
 - [Filtering](https://www.django-rest-framework.org/api-guide/filtering/#filtering) including ordering and filtering.
 - [dj-rest-auth](https://dj-rest-auth.readthedocs.io/en/latest/configuration.html) and finding ways around bug #2.
-
 
 [Return to contents list](#contents)

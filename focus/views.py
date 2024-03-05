@@ -24,7 +24,7 @@ class FocusList(generics.ListCreateAPIView):
         and only focus instances that are linked to the current user.
         Within this order by rank first (with null last), and then by created_at.
         """
-        return self.request.user.focus.all().order_by('rank', 'created_at').reverse()
+        return self.request.user.focus.all().order_by('rank', 'created_at')
 
 
 class FocusDetail(generics.RetrieveUpdateDestroyAPIView):
