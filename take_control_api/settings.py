@@ -93,6 +93,7 @@ INSTALLED_APPS = [
     'dj_rest_auth.registration',
     'corsheaders',
     'focus',
+    'goals',
 ]
 
 SITE_ID = 1
