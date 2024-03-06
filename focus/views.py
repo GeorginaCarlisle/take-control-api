@@ -1,4 +1,3 @@
-from django.shortcuts import render
 from .models import Focus
 from .serializers import FocusSerializer
 from rest_framework import generics
@@ -7,8 +6,8 @@ from take_control_api.permissions import OwnerOnly
 
 class FocusList(generics.ListCreateAPIView):
     """
-    View to return an list of focus areas and
-    also create a new focus area
+    View to return a list of focus areas for the logged in user
+    and also create a new focus area
     """
     serializer_class = FocusSerializer
 
