@@ -180,6 +180,7 @@ See [TESTING.md](TESTING.md) for all testing and validation.
 | 1 | In development mode with local host and db.sqlite3, when registering a new user their is a connection refused error originating in socket.py. Note: Form validation does work and a user is created. | Time was spent checking all related settings and exploring the error code. I also manufactored the same scenario using my walkthrough code (which I know works as expected with the frontend) and it also threw the same error. This led me to the thought that this might be directly connected with the db.sqlite3 database and the local host set-up and may not caused any issues in production. I decided to leave and see what happened on deployment. The deployed API created a new user no problem but threw a 500 error. Deployed walkthrough did the same. | Leave error for now and monitor how registration is handled by frontend. |
 | 2 | Default permission 'IsAuthenticated' was preventing unauthenticated users from seeing the root route message and for being able to send a register or login request | First I removed this permission, this solved the initial problem but caused further problems with the list view trying to find a focus for an annoymonous user. I then went back to the django documentation learning about the permission_classes decorators and also the dj-rest-auth documentation. | Default permission reinstated and instead overridden where needed. The root_route overridden with a permission_classes decorator and the AllowAny permission. The registration paths overridden in settings.py within REST_AUTH. This also seemed to fix the login path too. |
 | 3 | The FocusListView for the deployed API is returning the list in the complete opposite order to development. | Research suggested that this might be due to how the production and development databases handle ordering differently. | Queryset code in the view changed. Production now correct and development wrong. |
+| 4 | Attempting to calculate the difference between datetime.(now) and a date held in the database threw a TypeError: can't subtract offset-naive and offset-aware datetimes. | I researched further about the datetime object learning the difference between naive and aware. I then searched for ways to convert datetime.now into an aware datetime object with the timezone utc, as this was what the timezone of the api is set to. | Use of the replace() method and the sub class tzinfo to give datetime.now() a timezone and make it aware. The caclulation now works without error. |
 
 [Return to contents list](#contents)
 
@@ -221,5 +222,11 @@ Django Rest Framework documentation was used throughout the building of this pro
 - [Querysets](https://www.django-rest-framework.org/api-guide/viewsets/#modelviewset) and controlling what is being pulled from the database as part of a view.
 - [Filtering](https://www.django-rest-framework.org/api-guide/filtering/#filtering) including ordering and filtering.
 - [dj-rest-auth](https://dj-rest-auth.readthedocs.io/en/latest/configuration.html) and finding ways around bug #2.
+
+The following documentation was also used:
+
+- [Python datetime documentation](https://docs.python.org/3/library/datetime.html#) to support with understanding the datetime object and how it can be aware and naive.
+
+- [Python - datetime.tzinfo()](https://www.geeksforgeeks.org/python-datetime-tzinfo/) to also support with understanding the datetime object.
 
 [Return to contents list](#contents)

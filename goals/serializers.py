@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from datetime import datetime, timedelta
+from datetime import datetime, timezone
 from .models import Goal
 
 
@@ -17,16 +17,17 @@ class GoalSerializer(serializers.ModelSerializer):
         request = self.context['request']
         return request.user == obj.owner
 
-    def get_days_remaining(self, deadline):
+    def get_days_remaining(self, obj):
         """
         Generates a new field containing the number of days remaining until
         the deadline.
         """
-        if deadline:
-            today = timedelta(datetime.now())
-            future_deadline = timedelta(deadline)
-            time_difference = future_deadline - today
-            days_remaining = time_difference.day
+        future_deadline = obj.deadline
+        if future_deadline:
+            today_naive = datetime.now()
+            today_aware = today_naive.replace(tzinfo=timezone.utc)
+            time_difference = (future_deadline - today_aware).days
+            days_remaining = time_difference
             return days_remaining
         else:
             return None
