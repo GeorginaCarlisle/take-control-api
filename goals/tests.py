@@ -11,7 +11,8 @@ class GoalListViewTests(APITestCase):
     """
     def setUp(self):
         """
-        Create two users, each with one focus. The second user also has one goal.
+        Create two users, each with one focus.
+        The second user also has one goal.
         """
         first_tester = User.objects.create_user(
             username='FirstTester', password='pass')
@@ -21,10 +22,14 @@ class GoalListViewTests(APITestCase):
         second_tester = User.objects.create_user(
             username='SecondTester', password='word')
         second_tester_focus = Focus.objects.create(
-            owner=second_tester, name="Test", why="So the second user also has a focus"
+            owner=second_tester,
+            name="Test",
+            why="So the second user also has a focus"
         )
         Goal.objects.create(
-            owner=second_tester, title='Second Testers goal', focus=second_tester_focus
+            owner=second_tester,
+            title='Second Testers goal',
+            focus=second_tester_focus
         )
 
     def test_logged_out_no_create_goal(self):
@@ -89,7 +94,8 @@ class GoalListViewTests(APITestCase):
         Logged in user can request only goals with no parent
         """
         self.client.login(username='SecondTester', password='word')
-        self.client.post('/goals/', {"title": "nested goal", "focus": 2, "parent": 1})
+        self.client.post(
+            '/goals/', {"title": "nested goal", "focus": 2, "parent": 1})
         response = self.client.get('/goals/?parent=None')
         number_goals_returned = response.data['count']
         results = response.data['results']
@@ -103,7 +109,8 @@ class GoalListViewTests(APITestCase):
         Logged in user can request children goals of a specified parent
         """
         self.client.login(username='SecondTester', password='word')
-        self.client.post('/goals/', {"title": "nested goal", "focus": 2, "parent": 1})
+        self.client.post(
+            '/goals/', {"title": "nested goal", "focus": 2, "parent": 1})
         response = self.client.get('/goals/?parent_id=1')
         number_goals_returned = response.data['count']
         results = response.data['results']
@@ -111,6 +118,7 @@ class GoalListViewTests(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(number_goals_returned, 1)
         self.assertEqual(title, 'nested goal')
+
 
 class GoalDetailViewTests(APITestCase):
     """
@@ -127,17 +135,23 @@ class GoalDetailViewTests(APITestCase):
             owner=first_tester, name="Name", why="Why"
         )
         Goal.objects.create(
-            owner=first_tester, title='First Testers goal', focus=first_tester_focus
+            owner=first_tester,
+            title='First Testers goal',
+            focus=first_tester_focus
         )
         second_tester = User.objects.create_user(
             username='SecondTester', password='word')
         second_tester_focus = Focus.objects.create(
-            owner=second_tester, name="Test", why="So the second user also has a focus"
+            owner=second_tester,
+            name="Test",
+            why="So the second user also has a focus"
         )
         Goal.objects.create(
-            owner=second_tester, title='Second Testers goal', focus=second_tester_focus
+            owner=second_tester,
+            title='Second Testers goal',
+            focus=second_tester_focus
         )
-    
+
     def test_logged_out_no_access_goal_detail(self):
         """
         Logged out user sending a get request for a goal,

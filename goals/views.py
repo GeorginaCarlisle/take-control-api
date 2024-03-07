@@ -41,6 +41,7 @@ class GoalList(generics.ListCreateAPIView):
         """
         return self.request.user.goal.all().order_by('deadline', 'created_at')
 
+
 class GoalDetail(generics.RetrieveUpdateDestroyAPIView):
     """
     View to return a specific goal where pk will be the id of the goal
