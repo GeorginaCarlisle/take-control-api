@@ -1,7 +1,21 @@
-#from .models import Goal
+from .models import Goal
 from .serializers import GoalSerializer
-from rest_framework import generics
+from rest_framework import generics, filters
+from django_filters.rest_framework import DjangoFilterBackend, FilterSet
 #from take_control_api.permissions import OwnerOnly
+
+
+class ParentFilter(filters.BaseFilterBackend):
+    """
+    Custom filter to filter goal list to include only goals with no parent
+    """
+    def filter_queryset(self, request, queryset, view):
+        parent_id = request.query_params.get('parent_id')
+        if parent_id:
+            queryset = queryset.filter(parent_id=parent_id)
+        else:
+            queryset = queryset.filter(parent=None)
+        return queryset
 
 
 class GoalList(generics.ListCreateAPIView):
@@ -10,6 +24,9 @@ class GoalList(generics.ListCreateAPIView):
     and also create a new goal
     """
     serializer_class = GoalSerializer
+    filter_backends = [
+        ParentFilter
+    ]
 
     def perform_create(self, serializer):
         """

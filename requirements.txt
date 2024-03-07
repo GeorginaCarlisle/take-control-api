@@ -11,6 +11,7 @@ Django==3.2.24
 django-allauth==0.44.0
 django-cloudinary-storage==0.3.0
 django-cors-headers==4.3.1
+django-filter==23.5
 djangorestframework==3.14.0
 djangorestframework-simplejwt==4.7.2
 gunicorn==21.2.0
