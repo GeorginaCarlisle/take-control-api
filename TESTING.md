@@ -63,6 +63,33 @@ While registration updates the database correctly a 500 error is thrown. See bug
 | | | Logged in user trying to get a focus that doesn't belong to them returns 403 error | PASS |
 | | | Logged out user cannot make get request 401 error | PASS |
 | | PUT | Logged in user can edit their focus | Fail in deployed API |
+| | PATCH | Logged in user can edit their focus | Fail in deployed API |
+| | DELETE | Logged in user can delete their focus | Fail in deployed API |
+
+Key notes:
+Walkthrough api, which works correctly from frontend also fails in the same way.
+
+### Goal model
+
+| url | http request | expected outcome | result |
+| --- | --- | --- | --- |
+| goals/ | GET | Unauthorized error for logged out users | PASS |
+| | | list of all logged in user's goals and non of anyone elses | PASS |
+| | | goals ordered by deadline first and then by created_at | PASS |
+| goals/?parent=None | GET | list of all user's goals which don't have a parent | PASS |
+| goals/?parent_id=<> | GET | list of all user's goals which are nested in parent given | PASS |
+| goals/?focus_id=<> | GET | list of all user's goals with focus given | PASS |
+| goals/?focus_id=<>&parent=None | GET | list of all user's goals with focus given and which don't have a parent | PASS |
+| | POST | Unauthorized error for logged out users | PASS |
+| | | Error message for empty title field | PASS |
+| | | Error message for name over 50 characters | PASS |
+| | | new goal created for logged in user | PASS |
+| goals/<int:pk> | GET | Invalid goal request returns 404 | PASS |
+| | | Logged in user can get their goal | PASS |
+| | | Logged in user trying to get a goal that doesn't belong to them returns 403 error | PASS |
+| | | Logged out user cannot make get request 401 error | PASS |
+| | PUT | Logged in user can edit their goal | Fail in deployed API |
+| | PATCH | Logged in user can edit their goal | Fail in deployed API |
 | | DELETE | Logged in user can delete their focus | Fail in deployed API |
 
 Key notes:
@@ -96,5 +123,31 @@ Automated tests have been created for all views
 | test_logged_in_owner_denied_edit_focus_dont_own | Logged in user sending a put request for focus they dont own, should return access denied | Pass |
 | test_logged_in_owner_can_delete_their_focus | Logged in user sending a delete request for owned focus, should return ok and delete focus | Pass |
 | test_logged_in_owner_denied_delete_focus_dont_own | Logged in user sending a delete request for focus they don't own, should return access denied | Pass |
+
+### GoalListView
+
+| Test name | Description | Outcome |
+| --- | ---- | -- |
+| test_logged_out_no_create_goal | Not logged in user sending HTTP post request, should return 403 error | Pass |
+| test_logged_in_can_create_goal | Logged in user sending a post request with title, should return 201 and create | Pass |
+| test_goal_create_no_title_throws_error | Logged in user sending post request without name data, should return 400 error | Pass |
+| test_logged_out_no_view_goal_list | Not logged in user sending HTTP get request, should recieve 403 error | Pass |
+| test_view_own_goals_only | Logged in user sending get request, receives only their goals | Pass |
+| test_filter_by_parent_is_none | Logged in user can request only goals with no parent | Pass |
+| test_filter_by_parent_id | Logged in user can request children goals of a specified parent | Pass |
+| test_filter_by_focus_id | Logged in user can request goals linked to a specific focus | Pass |
+
+### GoalDetailView
+
+| Test name | Description | Outcome |
+| --- | ---- | -- |
+| test_logged_out_no_access_goal_detail | Logged out user sending a get request for a goal, should recieve access denied | Pass |
+| test_logged_in_can_get_their_goal | Logged in user sending a get request for a goal they own, should return goal | Pass |
+| test_logged_in_denied_goal_dont_own | Logged in user sending get request for goal they don't own, should return access denied. | Pass |
+| test_invalid_goal_request_handled | Logged in user sending a get request for a goal that doesn't exist, should return 404 not found | Pass |
+| test_logged_in_owner_can_edit_their_goal | Logged in user sending a patch request for owned goal, should return ok and make changes | Pass |
+| test_logged_in_owner_denied_edit_goal_dont_own | Logged in user sending a patch request for goal they dont own, should return access denied | Pass |
+| test_logged_in_owner_can_delete_their_goal | Logged in user sending a delete request for owned goal, should return ok and delete focus | Pass |
+| test_logged_in_owner_denied_delete_goal_dont_own | Logged in user sending a delete request for goal they don't own, should return access denied | Pass |
 
 [Return to contents list](#contents)
