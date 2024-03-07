@@ -95,6 +95,8 @@ INSTALLED_APPS = [
     'corsheaders',
     'focus',
     'goals',
+    'tasks',
+    'labels',
 ]
 
 SITE_ID = 1
