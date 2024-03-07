@@ -18,6 +18,7 @@ class TaskSerializer(serializers.ModelSerializer):
     goal_deadline_near = serializers.SerializerMethodField()
     focus_image = serializers.SerializerMethodField()
     goal_name = serializers.SerializerMethodField()
+    active = serializers.SerializerMethodField()
 
     def get_is_owner(self, obj):
         request = self.context['request']
@@ -93,6 +94,21 @@ class TaskSerializer(serializers.ModelSerializer):
             else:
                 return "Miscellaneous"
 
+    def get_active(self,obj):
+        """
+        generates a new field that is true if no goal, or goal is active
+        and false if goal is not active
+        """
+        goal_id = obj.goal
+        if goal_id:
+            goal = Goal.objects.get(id=goal_id)
+            if goal.active:
+                return True
+            else:
+                return False
+        else:
+            return True
+
     class Meta:
         model = Task
         fields = [
@@ -111,5 +127,6 @@ class TaskSerializer(serializers.ModelSerializer):
             'deadline_near',
             'goal_deadline_near',
             'focus_image',
-            'goal_name'
+            'goal_name',
+            'active'
         ]
