@@ -16,7 +16,6 @@ class TaskSerializer(serializers.ModelSerializer):
     is_owner = serializers.SerializerMethodField()
     deadline_near = serializers.SerializerMethodField()
     goal_deadline_near = serializers.SerializerMethodField()
-    focus_image = serializers.SerializerMethodField()
     goal_name = serializers.SerializerMethodField()
     active = serializers.SerializerMethodField()
 
@@ -46,8 +45,8 @@ class TaskSerializer(serializers.ModelSerializer):
         """
         Generates a new field containing information if the linked goal is near
         """
-        goal_id = obj.goal
-        if goal_id:
+        if obj.goal:
+            goal_id = obj.goal.id
             goal = Goal.objects.get(id=goal_id)
             goal_deadline = goal.deadline
             if goal_deadline:
@@ -64,32 +63,18 @@ class TaskSerializer(serializers.ModelSerializer):
         else:
             return None
 
-    def get_focus_image(self, obj):
-        """
-        Generates a new field containing the image for the connected focus,
-        if no connected focus adds the miscellaneous image
-        """
-        focus_id = obj.focus
-        if focus_id:
-            focus = Focus.objects.get(id=focus_id)
-            return focus.image
-        else:
-            cloudinary_url = os.environ.get('CLOUDINARY_URL')
-            return f'{cloudinary_url}/miscellaneous-tasks_b6f2gl'
-
     def get_goal_name(self, obj):
         """
         Generates a new field containing the name of the linked goal,
         if no goal but a focus handles
         if no goal and no focus handles
         """
-        goal_id = obj.goal
-        if goal_id:
+        if obj.goal:
+            goal_id = obj.goal.id
             goal = Goal.objects.get(id=goal_id)
-            return goal.name
+            return goal.title
         else:
-            focus_id = obj.focus
-            if focus_id:
+            if obj.focus:
                 return "Day-to-day"
             else:
                 return "Miscellaneous"
@@ -99,8 +84,8 @@ class TaskSerializer(serializers.ModelSerializer):
         generates a new field that is true if no goal, or goal is active
         and false if goal is not active
         """
-        goal_id = obj.goal
-        if goal_id:
+        if obj.goal:
+            goal_id = obj.goal.id
             goal = Goal.objects.get(id=goal_id)
             if goal.active:
                 return True
@@ -126,7 +111,6 @@ class TaskSerializer(serializers.ModelSerializer):
             'labels',
             'deadline_near',
             'goal_deadline_near',
-            'focus_image',
             'goal_name',
             'active'
         ]

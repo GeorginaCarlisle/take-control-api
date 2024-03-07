@@ -40,7 +40,7 @@ class GoalList(generics.ListCreateAPIView):
     def get_queryset(self):
         """
         Pulls all of the goal instances that are linked to the current user
-        and only focus instances that are linked to the current user. Within
+        and only goal instances that are linked to the current user. Within
         this order by rank first (with null last), and then by created_at.
         """
         return self.request.user.goal.all().order_by('deadline', 'created_at')
