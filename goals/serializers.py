@@ -6,7 +6,7 @@ from .models import Goal
 class GoalSerializer(serializers.ModelSerializer):
     """
     Serializer for the Goal model. It changes owner.id into owner.username,
-    adds an extra field is_owner .....
+    adds extra fields is_owner, days_remaining and deadline_near
     """
     owner = serializers.ReadOnlyField(source='owner.username')
     is_owner = serializers.SerializerMethodField()
@@ -26,8 +26,7 @@ class GoalSerializer(serializers.ModelSerializer):
         if future_deadline:
             today_naive = datetime.now()
             today_aware = today_naive.replace(tzinfo=timezone.utc)
-            time_difference = (future_deadline - today_aware).days
-            days_remaining = time_difference
+            days_remaining = (future_deadline - today_aware).days
             return days_remaining
         else:
             return None

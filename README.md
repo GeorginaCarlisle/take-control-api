@@ -210,6 +210,8 @@ The following code from [Code Institute's](https://codeinstitute.net/) Django re
 
 [Code Institute](https://codeinstitute.net/) - The default post image from the "Django Rest" walkthrough has been used here as the default focus image.
 
+Image of a person writing in a notebook by [Ylanite Koppens](https://www.pexels.com/photo/person-holding-silver-retractable-pen-in-white-ruled-book-796603/) - has been used as the image associated with all miscellaneous tasks.
+
 [Return to contents list](#contents)
 
 ## Acknowledgements
