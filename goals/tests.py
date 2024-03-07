@@ -119,6 +119,20 @@ class GoalListViewTests(APITestCase):
         self.assertEqual(number_goals_returned, 1)
         self.assertEqual(title, 'nested goal')
 
+    def test_filter_by_focus_id(self):
+        """
+        Logged in user can request goals linked to a specific focus
+        """
+        self.client.login(username='SecondTester', password='word')
+        self.client.post('/focus/', {"name": "second focus"})
+        self.client.post(
+            '/goals/', {"title": "focus 3 goal", "focus": 3})
+        response = self.client.get('/goals/?focus_id=3')
+        results = response.data['results']
+        title = results[0]['title']
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(title, 'focus 3 goal')
+
 
 class GoalDetailViewTests(APITestCase):
     """

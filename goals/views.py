@@ -4,17 +4,20 @@ from rest_framework import generics, filters
 from take_control_api.permissions import OwnerOnly
 
 
-class ParentFilter(filters.BaseFilterBackend):
+class ListFilter(filters.BaseFilterBackend):
     """
     Custom filter to filter goal list to include only goals with no parent
     """
     def filter_queryset(self, request, queryset, view):
         parent_id = request.query_params.get('parent_id')
         parent = request.query_params.get('parent')
+        focus_id = request.query_params.get('focus_id')
         if parent_id:
             queryset = queryset.filter(parent_id=parent_id)
-        elif parent:
+        if parent:
             queryset = queryset.filter(parent=None)
+        if focus_id:
+            queryset = queryset.filter(focus_id=focus_id)
         return queryset
 
 
@@ -25,7 +28,7 @@ class GoalList(generics.ListCreateAPIView):
     """
     serializer_class = GoalSerializer
     filter_backends = [
-        ParentFilter
+        ListFilter
     ]
 
     def perform_create(self, serializer):
