@@ -28,7 +28,7 @@ class FocusList(generics.ListCreateAPIView):
 
 class FocusDetail(generics.RetrieveUpdateDestroyAPIView):
     """
-    View to return a specific focus where pk will be the id of the post
+    View to return a specific focus where pk will be the id of the focus
     """
     serializer_class = FocusSerializer
     permission_classes = [OwnerOnly]

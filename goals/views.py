@@ -1,8 +1,7 @@
 from .models import Goal
 from .serializers import GoalSerializer
 from rest_framework import generics, filters
-from django_filters.rest_framework import DjangoFilterBackend, FilterSet
-#from take_control_api.permissions import OwnerOnly
+from take_control_api.permissions import OwnerOnly
 
 
 class ParentFilter(filters.BaseFilterBackend):
@@ -41,3 +40,11 @@ class GoalList(generics.ListCreateAPIView):
         this order by rank first (with null last), and then by created_at.
         """
         return self.request.user.goal.all().order_by('deadline', 'created_at')
+
+class GoalDetail(generics.RetrieveUpdateDestroyAPIView):
+    """
+    View to return a specific goal where pk will be the id of the goal
+    """
+    serializer_class = GoalSerializer
+    permission_classes = [OwnerOnly]
+    queryset = Goal.objects.all()
