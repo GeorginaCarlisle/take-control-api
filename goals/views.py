@@ -10,9 +10,10 @@ class ParentFilter(filters.BaseFilterBackend):
     """
     def filter_queryset(self, request, queryset, view):
         parent_id = request.query_params.get('parent_id')
+        parent = request.query_params.get('parent')
         if parent_id:
             queryset = queryset.filter(parent_id=parent_id)
-        else:
+        elif parent:
             queryset = queryset.filter(parent=None)
         return queryset
 
