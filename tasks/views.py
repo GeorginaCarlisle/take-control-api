@@ -68,7 +68,7 @@ class TaskList(generics.ListCreateAPIView):
         and only those owned by the user. Within this order by
         deadline and then created_by
         """
-        return self.request.user.task.all()
+        return self.request.user.task.all().order_by('deadline', 'created_at')
 
 
 class TaskDetail(generics.RetrieveUpdateDestroyAPIView):
