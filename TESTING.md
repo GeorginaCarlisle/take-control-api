@@ -104,7 +104,17 @@ Walkthrough api, which works correctly from frontend also fails in the same way.
 
 ## Automated Testing
 
-Automated tests have been created for all views
+Automated tests have been created for all views. These tests cover:
+
+- Access of logged in and logged out users
+- Access of owners and non-owners
+- POST, GET, PATCH and DELETE request methods
+- Filtering methods
+
+The tests don't cover the following due to the extra complexity and time needed to write the tests. These have all been fully tested using manual testing:
+
+- PUT request methods
+- Ordering methods
 
 ### FocusListView
 
@@ -154,5 +164,33 @@ Automated tests have been created for all views
 | test_logged_in_owner_denied_edit_goal_dont_own | Logged in user sending a patch request for goal they dont own, should return access denied | Pass |
 | test_logged_in_owner_can_delete_their_goal | Logged in user sending a delete request for owned goal, should return ok and delete focus | Pass |
 | test_logged_in_owner_denied_delete_goal_dont_own | Logged in user sending a delete request for goal they don't own, should return access denied | Pass |
+
+### TaskListView
+
+| Test name | Description | Outcome |
+| --- | ---- | -- |
+| test_logged_out_no_create_task | Not logged in user sending HTTP post request, should return 403 error | Pass |
+| test_logged_in_can_create_task | Logged in user sending a post request with name, should return 201 and create | Pass |
+| test_logged_out_no_view_task_list | Not logged in user sending a get request should recieve 403 error | Pass |
+| test_view_own_tasks_only | Logged in user sending get request, receives only their tasks | Pass |
+| test_filter_tasks_by_active | Logged in user can request only their active tasks | Pass |
+| test_filter_tasks_by_today | Logged in user can request only their today tasks | Pass |
+| test_filter_tasks_by_achieved | Logged in user can request only their achieved tasks | Pass |
+| test_filter_by_miscellaneous | Logged in user can request only their tasks with no focus | Pass |
+| test_filter_by_focus_day_to_day | Logged in user can request all the day-to-day tasks from one of their focus areas | Pass |
+| test_filter_by_goal | Logged in user can request all tasks linked to a goal | Pass |
+
+### TaskDetailView
+
+| Test name | Description | Outcome |
+| --- | --- | --- |
+| test_logged_out_no_access_task_detail | Logged out user sending a get request for a task, should recieve access denied | Pass |
+| test_logged_in_can_get_their_task | Logged in user sending a get request for a task they own, should return task | Pass |
+| test_logged_in_denied_task_dont_own | Logged in user sending get request for task they don't own, should return access denied | Pass |
+| test_invalid_task_request_handled | Logged in user sending a get request for a task that doesn't exist, should return 404 not found | Pass |
+| test_logged_in_owner_can_edit_their_task | Logged in user sending a patch request for owned task, should return ok and make changes | Pass |
+| test_logged_in_owner_denied_edit_task_dont_own | Logged in user sending a patch request for task they dont own, should return access denied. | Pass |
+| test_logged_in_owner_can_delete_their_task | Logged in user sending a delete request for owned task, should return ok and delete task | Pass |
+| test_logged_in_owner_denied_delete_task_dont_own | Logged in user sending a delete request for task they don't own, should return access denied | Pass |
 
 [Return to contents list](#contents)
