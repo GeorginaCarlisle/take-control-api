@@ -228,7 +228,7 @@ class GoalDetailViewTests(APITestCase):
     def test_logged_in_owner_can_delete_their_goal(self):
         """
         Logged in user sending a delete request for owned goal,
-        should return ok and delete focus
+        should return ok and delete goal
         """
         self.client.login(username='FirstTester', password='pass')
         response = self.client.delete('/goals/1')

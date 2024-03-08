@@ -193,3 +193,105 @@ class TaskListViewTests(APITestCase):
         self.assertEqual(task_name, 'Second paused goal')
         self.assertEqual(number_tasks_returned, 1)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+class TaskDetailViewTests(APITestCase):
+    """
+    Tests for the Task Detail view
+    """
+    def setUp(self):
+        """
+        Create two users, each with a task
+        """
+        first_tester = User.objects.create_user(
+            username='FirstTester', password='pass')
+        Task.objects.create(
+            owner=first_tester,
+            name="First miscellaneous today achieved",
+            today=True,
+            achieved=True
+        )
+        second_tester = User.objects.create_user(
+            username='SecondTester', password='word')
+        Task.objects.create(
+            owner=second_tester,
+            name="Second miscellaneous backlog only"
+        )
+
+    def test_logged_out_no_access_task_detail(self):
+        """
+        Logged out user sending a get request for a task,
+        should recieve access denied
+        """
+        response = self.client.get('/tasks/1')
+        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
+
+    def test_logged_in_can_get_their_task(self):
+        """
+        Logged in user sending a get request for a task they own,
+        should return task
+        """
+        self.client.login(username='FirstTester', password='pass')
+        response = self.client.get('/tasks/1')
+        task = response.data
+        owner = task['owner']
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(owner, 'FirstTester')
+
+    def test_logged_in_denied_task_dont_own(self):
+        """
+        Logged in user sending get request for task they don't own,
+        should return access denied
+        """
+        self.client.login(username='FirstTester', password='pass')
+        response = self.client.get('/tasks/2')
+        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
+
+    def test_invalid_task_request_handled(self):
+        """
+        Logged in user sending a get request for a task that doesn't exist,
+        should return 404 not found
+        """
+        self.client.login(username='FirstTester', password='pass')
+        response = self.client.get('/tasks/3')
+        self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
+
+    def test_logged_in_owner_can_edit_their_task(self):
+        """
+        Logged in user sending a patch request for owned task,
+        should return ok and make changes
+        """
+        self.client.login(username='FirstTester', password='pass')
+        response = self.client.patch('/tasks/1', {'name': 'name changed'})
+        task = response.data
+        name = task['name']
+        self.assertEqual(name, 'name changed')
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+    def test_logged_in_owner_denied_edit_task_dont_own(self):
+        """
+        Logged in user sending a patch request for task they dont own,
+        should return access denied
+        """
+        self.client.login(username='FirstTester', password='pass')
+        response = self.client.patch('/tasks/2', {'name': 'name changed'})
+        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
+
+    def test_logged_in_owner_can_delete_their_task(self):
+        """
+        Logged in user sending a delete request for owned task,
+        should return ok and delete task
+        """
+        self.client.login(username='FirstTester', password='pass')
+        response = self.client.delete('/tasks/1')
+        count = Task.objects.count()
+        self.assertEqual(count, 1)
+        self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
+
+    def test_logged_in_owner_denied_delete_task_dont_own(self):
+        """
+        Logged in user sending a delete request for task they don't own,
+        should return access denied
+        """
+        self.client.login(username='FirstTester', password='pass')
+        response = self.client.delete('/tasks/2')
+        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
