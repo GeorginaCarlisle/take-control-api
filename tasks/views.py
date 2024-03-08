@@ -45,7 +45,15 @@ class TaskList(generics.ListCreateAPIView):
     """
     serializer_class = TaskSerializer
     filter_backends = [
-        ListFilter
+        ListFilter,
+        filters.OrderingFilter,
+    ]
+    ordering_fields = [
+        'updated_at',
+        'focus__rank',
+        'goal__deadline',
+        'deadline',
+        'created_at',
     ]
 
     def perform_create(self, serializer):
@@ -60,4 +68,4 @@ class TaskList(generics.ListCreateAPIView):
         and only those owned by the user. Within this order by
         deadline and then created_by
         """
-        return self.request.user.task.all().order_by('created_at')
+        return self.request.user.task.all()
