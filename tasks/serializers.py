@@ -15,11 +15,8 @@ class TaskSerializer(serializers.ModelSerializer):
     owner = serializers.ReadOnlyField(source='owner.username')
     is_owner = serializers.SerializerMethodField()
     deadline_info = serializers.SerializerMethodField()
-    goal_deadline = serializers.SerializerMethodField()
     goal_deadline_info = serializers.SerializerMethodField()
-    goal_name = serializers.SerializerMethodField()
-    active = serializers.SerializerMethodField()
-    focus_rank = serializers.SerializerMethodField()
+    context = serializers.SerializerMethodField()
 
     def get_is_owner(self, obj):
         request = self.context['request']
@@ -44,34 +41,27 @@ class TaskSerializer(serializers.ModelSerializer):
         else:
             return None
 
-    def get_goal_deadline(self, obj):
-        """
-        Generates a new field containing the linked goals deadline,
-        if there is a linked goal
-        """
-        if obj.goal:
-            return obj.goal.deadline
-        else:
-            return None
-
     def get_goal_deadline_info(self, obj):
         """
         Generates a new field containing information if the linked goal is near
         """
-        goal_deadline = self.get_goal_deadline(obj)
-        if goal_deadline:
-            today_naive = datetime.now()
-            today_aware = today_naive.replace(tzinfo=timezone.utc)
-            days_remaining = (goal_deadline - today_aware).days
-            easy_date = goal_deadline.strftime('%d/%m/%y')
-            if days_remaining<=7:
-                return f'Goal due on the {easy_date} only {days_remaining} days to go'
+        if obj.goal:
+            if obj.goal.deadline:
+                goal_deadline = obj.goal.deadline
+                today_naive = datetime.now()
+                today_aware = today_naive.replace(tzinfo=timezone.utc)
+                days_remaining = (goal_deadline - today_aware).days
+                easy_date = goal_deadline.strftime('%d/%m/%y')
+                if days_remaining<=7:
+                    return f'due on the {easy_date} only {days_remaining} days to go'
+                else:
+                    return f'due on the {easy_date}'
             else:
-                return f'Goal due on the {easy_date}'
+                return None
         else:
             return None
 
-    def get_goal_name(self, obj):
+    def get_context(self, obj):
         """
         Generates a new field containing the name of the linked goal,
         if no goal but a focus handles
@@ -83,34 +73,9 @@ class TaskSerializer(serializers.ModelSerializer):
             return goal.title
         else:
             if obj.focus:
-                return "Day-to-day"
+                return f'Day-to-day {obj.focus.name} task'
             else:
-                return "Miscellaneous"
-
-    def get_active(self, obj):
-        """
-        generates a new field that is true if no goal, or goal is active
-        and false if goal is not active
-        """
-        if obj.goal:
-            goal_id = obj.goal.id
-            goal = Goal.objects.get(id=goal_id)
-            if goal.active:
-                return True
-            else:
-                return False
-        else:
-            return True
-
-    def get_focus_rank(self, obj):
-        """
-        Generates a new field that inherits from the focus_rank field of
-        the connected focus. If no connected focus field is given the value None
-        """
-        if obj.focus:
-            return obj.focus.rank
-        else:
-            return None
+                return "Miscellaneous task"
 
 
     class Meta:
@@ -128,10 +93,8 @@ class TaskSerializer(serializers.ModelSerializer):
             'name',
             'deadline',
             'labels',
-            'deadline_info',
-            'goal_deadline',
-            'goal_deadline_info',            
-            'goal_name',
             'active',
-            'focus_rank'
+            'deadline_info',
+            'goal_deadline_info',            
+            'context'
         ]
