@@ -6,7 +6,7 @@ from take_control_api.permissions import OwnerOnly
 
 class ListFilter(filters.BaseFilterBackend):
     """
-    Custom filter to filter goal list to include only goals with no parent
+    Custom filter to filter goal list by no parent, parent_id or focus_id
     """
     def filter_queryset(self, request, queryset, view):
         parent_id = request.query_params.get('parent_id')

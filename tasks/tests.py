@@ -40,6 +40,7 @@ class TaskListViewTests(APITestCase):
         )
         Task.objects.create(
             owner=first_tester,
+            goal=first_tester_goal,
             name="First active goal backlog only",
             focus=first_tester_focus,
         )
@@ -71,7 +72,8 @@ class TaskListViewTests(APITestCase):
             owner=second_tester,
             name="Second paused goal",
             focus=second_tester_focus,
-            goal=second_tester_goal
+            goal=second_tester_goal,
+            active=False
         )
 
     def test_logged_out_no_create_task(self):
@@ -113,4 +115,15 @@ class TaskListViewTests(APITestCase):
         results = response.data['results']
         task_owner = results[0]['owner']
         self.assertEqual(number_tasks_returned, 3)
+        self.assertEqual(task_owner, 'FirstTester')
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+    def test_filter_tasks_by_active(self):
+        """
+        Logged in user can request only their active tasks
+        """
+        self.client.login(username='SecondTester', password='word')
+        response = self.client.get('/tasks/?active=True')
+        number_tasks_returned = response.data['count']
+        self.assertEqual(number_tasks_returned, 2)
         self.assertEqual(response.status_code, status.HTTP_200_OK)

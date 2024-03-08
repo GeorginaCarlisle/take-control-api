@@ -4,12 +4,28 @@ from rest_framework import generics, filters
 from take_control_api.permissions import OwnerOnly
 
 
+class ListFilter(filters.BaseFilterBackend):
+    """
+    Custom filter to filter the task list by:
+    active, ........
+    """
+    def filter_queryset(self, request, queryset, view):
+        active = request.query_params.get('active')
+        if active == 'True':
+            queryset = queryset.filter(active=True)
+        elif active == 'False':
+            queryset = queryset.filter(active=False)
+        return queryset
+
 class TaskList(generics.ListCreateAPIView):
     """
     View to return a list of tasks for the logged in user
     and also to create a new task
     """
     serializer_class = TaskSerializer
+    filter_backends = [
+        ListFilter
+    ]
 
     def perform_create(self, serializer):
         """
