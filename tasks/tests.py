@@ -135,6 +135,9 @@ class TaskListViewTests(APITestCase):
         self.client.login(username='SecondTester', password='word')
         response = self.client.get('/tasks/?today=True')
         number_tasks_returned = response.data['count']
+        results = response.data['results']
+        task_name = results[0]['name']
+        self.assertEqual(task_name, 'Second focus today achieved')
         self.assertEqual(number_tasks_returned, 1)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
@@ -145,6 +148,9 @@ class TaskListViewTests(APITestCase):
         self.client.login(username='SecondTester', password='word')
         response = self.client.get('/tasks/?achieved=True')
         number_tasks_returned = response.data['count']
+        results = response.data['results']
+        task_name = results[0]['name']
+        self.assertEqual(task_name, 'Second focus today achieved')
         self.assertEqual(number_tasks_returned, 1)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
@@ -155,6 +161,9 @@ class TaskListViewTests(APITestCase):
         self.client.login(username='SecondTester', password='word')
         response = self.client.get('/tasks/?focus=None')
         number_tasks_returned = response.data['count']
+        results = response.data['results']
+        task_name = results[0]['name']
+        self.assertEqual(task_name, 'Second miscellaneous backlog only')
         self.assertEqual(number_tasks_returned, 1)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
@@ -166,5 +175,21 @@ class TaskListViewTests(APITestCase):
         self.client.login(username='SecondTester', password='word')
         response = self.client.get('/tasks/?focus=2')
         number_tasks_returned = response.data['count']
+        results = response.data['results']
+        task_name = results[0]['name']
+        self.assertEqual(task_name, 'Second focus today achieved')
+        self.assertEqual(number_tasks_returned, 1)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+    def test_filter_by_goal(self):
+        """
+        Logged in user can request all tasks linked to a goal
+        """
+        self.client.login(username='SecondTester', password='word')
+        response = self.client.get('/tasks/?goal=2')
+        number_tasks_returned = response.data['count']
+        results = response.data['results']
+        task_name = results[0]['name']
+        self.assertEqual(task_name, 'Second paused goal')
         self.assertEqual(number_tasks_returned, 1)
         self.assertEqual(response.status_code, status.HTTP_200_OK)

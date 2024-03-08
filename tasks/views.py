@@ -8,7 +8,7 @@ class ListFilter(filters.BaseFilterBackend):
     """
     Custom filter to filter the task list by:
     active, today, achieved, miscellaneous tasks,
-    focus day-to-day tasks
+    focus day-to-day tasks and goal.
     """
     def filter_queryset(self, request, queryset, view):
         active = request.query_params.get('active')
@@ -32,8 +32,11 @@ class ListFilter(filters.BaseFilterBackend):
                 queryset = queryset.filter(focus=None)
             else:
                 queryset = queryset.filter(focus=focus, goal=None)
-            
+        goal = request.query_params.get('goal')
+        if goal:
+            queryset = queryset.filter(goal=goal)
         return queryset
+
 
 class TaskList(generics.ListCreateAPIView):
     """
