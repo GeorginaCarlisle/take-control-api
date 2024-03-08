@@ -4,7 +4,7 @@ Developer: Georgina Carlisle
 
 An API providing full CRUD functionality for task management data that includes setting focus areas and goals. This API utilises the Django Rest Framework and was created to provide backend functionality for the Take Control application.
 
-Take Control API live link:
+[Take Control API live link](https://take-control-api-d106d6135431.herokuapp.com/)
 [Take Control App repository](https://github.com/GeorginaCarlisle/take-control-frontend-app)
 Take Control App live link:
 
@@ -39,6 +39,158 @@ Take Control App live link:
 ---
 
 ## Features
+
+### Security
+
+Only the following can be accessed by none authenticated users, all other endpoints can only be accessed if authorised:
+
+- The base root, which gives a welcome message
+- The /dj-rest-auth/registration/ endpoint, which allows new users to register.
+- The /dj-rest-auth/login/ endpoint, which allows users to login
+
+Only owners of a data instance can access any CRUD functionality related to it. All get requests returning a list will only return items for which the user is the owner. Any requests for a specific item that the user doesn't own will be denied.
+
+### User Model
+
+Users can register, login and logout.
+
+| Field | Automatic/required/optional | Notes |
+| --- | ---- | ---- |
+| username | required | Must be unique |
+| email | required | Must be unique and a valid format |
+| password | required | Must pass complexity rules to prevent common or easily guessable passwords |
+
+Endpoints for the user model:
+
+| url | notes |
+| --- | --- |
+| dj-rest-auth/registration/ | register a new user account |
+| dj-rest-auth/login/ | Login to account |
+| dj-rest-auth/logout/ | Logout of account |
+
+### Focus Model
+
+Users can store focus areas - areas of their life which they would like to focus on. These can be given a 'why' reason, an image and a rank.
+
+Fields held within the database:
+
+| Field | Automatic/required/optional | Notes |
+| --- | ---- | ---- |
+| owner | automatically generated | Foreign key link to a user instance |
+| created_at | automatically generated | DateTime |
+| updated_at | automatically generated | DateTime |
+| name | required | text of max characters 50 |
+| rank | optional | integer |
+| why | optional | text |
+| image | default provided if non given | stored in cloudinary, only images smaller than 2MBS, height: 4096 and width: 4096 will be accepted |
+
+Extra fields generated and returned with a GET request:
+
+- Is owner field, which will return true if the authorised user is the owner
+
+Endpoints for the focus model:
+
+| url | http request | notes |
+| --- | --- | --- |
+| focus/ | GET | Returns a list of user's focus areas ordered by rank first and then by created_at |
+| focus/ | POST | Create a new focus area |
+| focus/id | GET | Get a specific focus area using it's id |
+| focus/id | PUT | Update a focus area. All details needed |
+| focus/id | PATCH | update a field within a focus area. |
+| focus/id | DELETE | Delete a focus area using it's id |
+
+### Goal Model
+
+Users can store their goals. These must be linked to a focus area. Goals can be given a description, value to be gained, success criteria and deadline. They can be toggled as active or not. Goals may be nested inside each other providing the option to break large goals up into smaller ones.
+
+Fields held within the database:
+
+| Field | Automatic/required/optional | Notes |
+| --- | ---- | ---- |
+| owner | automatically generated | Foreign key link to a user instance |
+| focus | required | Foreign key link to a focus instance. Input focus id |
+| children | default: false | Set as true if this goal has nested goals |
+| parent | optional | Foreign key link to a goal instance providing a way to nest one goal inside another |
+| created_at | automatically generated | DateTime |
+| updated_at | automatically generated | DateTime |
+| active | default: true | set as false to pause goal |
+| deadline | optional | DateTime |
+| title | required | text of max characters 50 |
+| description | optional | text of max characters 100 |
+| value | optional | text of max characters 100 |
+| criteria | optional | text of max characters 100 |
+
+Extra fields generated and returned with a GET request:
+
+- is_owner field, which will return true if the authorised user is the owner
+- days_remaining field, which will return the number of days remaining until the deadline.
+- deadline_near, which will return true if the deadline is less than 7 days away.
+
+Endpoints for the goal model. Note multiple filter and ordering options can be given together. Example: goals/?focus_id=<>&parent=None :
+
+| url | http request | notes |
+| --- | --- | --- |
+| goals/ | GET | Returns a list of user's focus areas ordered by deadline first and then by created_at |
+| goals/?parent=None | GET | Returns a list of all the user's goals without a parent (aren't nested) |
+| goals/?parent_id=<> | GET | Returns a list of all user's goals which are nested in a given parent |
+| goals/?focus_id=<> | GET | Returns a list of all user's goals with given focus |
+| goals/ | POST | Create a new focus area |
+| goals/id | GET | Get a specific focus area using it's id |
+| goals/id | PUT | Update a focus area. All details needed |
+| goals/id | PATCH | update a field within a focus area. |
+| goals/id | DELETE | Delete a focus area using it's id |
+
+### Task Model
+
+Users can store their tasks. Tasks can be linked directly to a focus, to a goal or be unlinked. Tasks can be given a description and have the following set as true or false: active, today or achieved. A number of extra fields are also returned with a task. Multiple options for filtering and ordering are included.
+
+Fields held within the database:
+
+| Field | Automatic/required/optional | Notes |
+| --- | ---- | ---- |
+| owner | automatically generated | Foreign key link to a user instance |
+| focus | optional | Foreign key link to a focus instance. Input focus id |
+| goal | optional | Foreign key link to a goal instance. Input goal id |
+| created_at | automatically generated | DateTime |
+| updated_at | automatically generated | DateTime |
+| active | default: true | can change to false |
+| today | default: false | can change to true |
+| achieved | default: false | can change to true |
+| deadline | optional | DateTime |
+| name | required | text of max characters 100 |
+
+Extra fields generated and returned with a GET request:
+
+- is_owner field, which will return true if the authorised user is the owner.
+- deadline_info, which calculates if the task is overdue, due today or due tomorrow.
+- goal_deadline_info, which brings in the deadline of a linked goal and calculates if it is overdue, due today or due tomorrow.
+- context, which details clearly how the task is linked.
+
+Endpoints for the task model. Note multiple filter and ordering options can be given together:
+
+| url | http request | notes |
+| --- | --- | --- |
+| tasks/ | GET | Returns a list of user's tasks ordered by deadline first and then by created_at |
+| tasks/?active=True | GET | Returns a list of all the user's active tasks |
+| tasks/?active=False | GET | Returns a list of all the user's non-active tasks |
+| tasks/?today=True | GET | Returns a list of all user's today tasks |
+| tasks/?today=False | GET | Returns a list of all user's tasks not marked as today |
+| tasks/?achieved=True | GET | Returns a list of all user's achieved tasks |
+| tasks/?achieved=False | GET | Returns a list of all user's tasks not marked as achieved |
+| tasks/?focus=None | GET | List all user's miscellaneous tasks |
+| tasks/?focus=id | GET | List all user's tasks for a given focus |
+| tasks/?goal=None | GET | List all user's tasks without a goal |
+| tasks/?goal=id | GET | List all user's tasks for a given goal |
+| tasks/?ordering=updated_at | GET | List all user's tasks in order of updated_at |
+| tasks/?ordering=focus__rank | GET | List all user's tasks in order of thier linked focus rank |
+| tasks/?ordering=goal__deadline | GET | List all user's tasks in order of their linked goal's deadline |
+| tasks/?ordering=deadline | GET | List all user's tasks in order of deadline |
+| tasks/?ordering=created_at | GET | List all user's tasks in order of created_at |
+| tasks/ | POST | Create a new task |
+| tasks/id | GET | Get a specific task using it's id |
+| tasks/id | PUT | Update a focus area. All details needed |
+| tasks/id | PATCH | update a field within a focus area. |
+| tasks/id | DELETE | Delete a focus area using it's id |
 
 [Return to contents list](#contents)
 
@@ -187,13 +339,93 @@ See [TESTING.md](TESTING.md) for all testing and validation.
 
 ## Deployment
 
+This API has been deployed using Heroku.
+
+Instructions to deploy using Heroku:
+
+1 - While in Heroku, navigate to dashboard and then click on the new button in the top right corner choosing: create new app.
+
+2 - Input a name for your app (this name will need to be unique) and choose the correct region for where you are located. Click create app.
+
+3 - Your app has been created, now click on the settings tab.
+
+4 - Click reveal config vars to add any keys the application will need. This project needs:
+ALLOWED_HOST, CLIENT_ORIGIN_DEV, CLOUDINARY_URL, DATABASE_URL and any secret keys.
+
+5 - Click on deploy tab. Select deploy method, in this case Git Hub. Confirm connection to git hub by searching for the correct repository and then connecting to it.
+
+6 - To manually deploy project click 'Deploy Branch'. Once built a message will appear saying: Your app was successfully deployed. Click the view button to view the deployed page making a note of it's url.
+
+7 - Don't forget to ensure Debug is false for final deployment.
+
 [Return to contents list](#contents)
 
 ## Cloning this repository
 
+In order to work on this repository you will first need to clone it.
+
+Instructions to clone the repository:
+
+1 - While in the GitHub repository, click on the green code button.
+
+2 - Copy the link.
+
+3 - In your IDE or local coding environment use the link to open the repository.
+
+For example: in VScode
+
+clicking on 'Clone Git Repository...' will bring up a box in which to paste the link.
+once vscode has the link, you will then be asked where you would like the repo saving.
+You should now be set up ready to work on the repository.
+
+For example: in CodeAnywhere
+
+Click on 'Add new workspace'
+You will then be given the option to 'Create from your project repository' and a box in which to paste the link
+CodeAnywhere will now open a new workspace containing the repository.
+You should now be set up ready to work on the repository.
+
+4 - If you are working in VSCode I would then recommend creating a virtual environment:
+
+I use the following command to do this: python3 -m venv .venv
+Agreeing to select as workspace folder.
+I move into the virutal environment with the command: source .venv/bin/activate
+
+5 - Import all dependencies. I use the command: pip3 install -r requirements.txt.
+
+6 - Create an env.py file in the main directory.
+
+7 - Enter key data, such as: SECRET_KEY, CLIENT_ORIGIN_DEV, CLOUDINARY_URL, DATABASE_URL and ['DEV'] = '1'
+
+8 - Check that both the virtual environment and env.py are named in the .gitignore file.
+
+9 - Check it's all working by running the program. I used the command: python3 manage.py runserver
+
 [Return to contents list](#contents)
 
 ## Forking a branch
+
+In order to protect the main branch while you work on something new, essential when working as part of a team or when you want to experiment with a new feature, you will need to fork a branch.
+
+Instructions to fork the repository:
+
+1 - While in the GitHub repository, click on the branch symbol and text indicating the number of branches.
+
+2 - This will load details on current branches. Click on the green 'New branch' button.
+
+3 - Enter a name for the new branch and then click the green 'create new branch' button.
+
+4 - Your new branch should now have appeared on the screen.
+
+5 - Clicking on the new branch and then following the steps for cloning will allow you to open up and work on this branch.
+
+Instructions to fork directly from an issue:
+
+1 - Click to view an issue, either from the issues list or from the project board. From the project board you will need to click once to bring up the issue and then again on the title to go into it fully.
+
+2 - Partway down the right hand side (on desktop) you should see the heading 'Development' and under this a link to 'create a branch for this issue or link a pull request'.
+
+3 - Click on the link to create a forked branch that is tied to the issue.
 
 [Return to contents list](#contents)
 

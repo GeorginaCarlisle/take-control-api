@@ -16,6 +16,10 @@ All code has been passed through a Python Linter.
 
 | App | file | outcome |
 | --- | --- | --- |
+| take_control_api | permissions.py | No errors |
+| | settings.py | Errors, see below |
+| | urls.py | No errors |
+| | views.py | No errors |
 | focus | models.py | No errors |
 | | serializers.py | No errors |
 | | tests.py | No errors |
@@ -31,6 +35,9 @@ All code has been passed through a Python Linter.
 | | tests.py | No errors |
 | | urls.py | No errors |
 | |  views.py | No errors |
+
+The following errors were returned for settings.py:
+![Screenshot showing 5 E501 line too long errors](documentation/errors-in-settings-file.png)
 
 [Return to contents list](#contents)
 
@@ -126,7 +133,7 @@ Walkthrough api, which works correctly from frontend also fails in the same way.
 | tasks/?ordering=focus__rank | GET | List all user's tasks in order of thier linked focus rank | PASS |
 | tasks/?ordering=goal__deadline | GET | List all user's tasks in order of their linked goal's deadline | PASS |
 | tasks/?ordering=deadline | GET | List all user's tasks in order of deadline | PASS |
-| tasks/?ordering=created_at | GET | List all user's tasks in oreder of created_at | PASS |
+| tasks/?ordering=created_at | GET | List all user's tasks in order of created_at | PASS |
 | tasks/<int:pk> | GET | Invalid task request returns 404 | PASS |
 | | | Logged in user can get their task | PASS |
 | | | Logged in user trying to get a task that doesn't belong to them returns 403 error | PASS |
