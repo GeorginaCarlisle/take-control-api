@@ -20,6 +20,11 @@ class ListFilter(filters.BaseFilterBackend):
             queryset = queryset.filter(today=True)
         elif today == 'False':
             queryset = queryset.filter(today=False)
+        achieved = request.query_params.get('achieved')
+        if achieved == 'True':
+            queryset = queryset.filter(achieved=True)
+        elif achieved == 'False':
+            queryset = queryset.filter(achieved=False)
         return queryset
 
 class TaskList(generics.ListCreateAPIView):
