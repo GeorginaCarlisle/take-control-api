@@ -127,3 +127,13 @@ class TaskListViewTests(APITestCase):
         number_tasks_returned = response.data['count']
         self.assertEqual(number_tasks_returned, 2)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+    def test_filter_tasks_by_today(self):
+        """
+        Logged in user can request only their today tasks
+        """
+        self.client.login(username='SecondTester', password='word')
+        response = self.client.get('/tasks/?today=True')
+        number_tasks_returned = response.data['count']
+        self.assertEqual(number_tasks_returned, 1)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)

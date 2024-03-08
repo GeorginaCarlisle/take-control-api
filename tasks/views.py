@@ -7,7 +7,7 @@ from take_control_api.permissions import OwnerOnly
 class ListFilter(filters.BaseFilterBackend):
     """
     Custom filter to filter the task list by:
-    active, ........
+    active, today
     """
     def filter_queryset(self, request, queryset, view):
         active = request.query_params.get('active')
@@ -15,6 +15,11 @@ class ListFilter(filters.BaseFilterBackend):
             queryset = queryset.filter(active=True)
         elif active == 'False':
             queryset = queryset.filter(active=False)
+        today = request.query_params.get('today')
+        if today == 'True':
+            queryset = queryset.filter(today=True)
+        elif today == 'False':
+            queryset = queryset.filter(today=False)
         return queryset
 
 class TaskList(generics.ListCreateAPIView):
