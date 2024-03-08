@@ -85,7 +85,7 @@ class TaskListViewTests(APITestCase):
         count = Task.objects.count()
         self.assertEqual(count, 6)
         self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
-    
+
     def test_logged_in_can_create_task(self):
         """
         Logged in user sending a post request with name,
@@ -193,6 +193,7 @@ class TaskListViewTests(APITestCase):
         self.assertEqual(task_name, 'Second paused goal')
         self.assertEqual(number_tasks_returned, 1)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
+
 
 class TaskDetailViewTests(APITestCase):
     """

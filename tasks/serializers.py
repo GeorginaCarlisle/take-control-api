@@ -9,8 +9,8 @@ from goals.models import Goal
 class TaskSerializer(serializers.ModelSerializer):
     """
     Serializer for the Task model. It changes owner.id into owner.username,
-    and adds extra fields is_owner, deadline_near, goal_deadline_near, focus_image
-    and goal_name
+    and adds extra fields is_owner, deadline_near, goal_deadline_near,
+    focus_image and goal_name
     """
     owner = serializers.ReadOnlyField(source='owner.username')
     is_owner = serializers.SerializerMethodField()
@@ -21,10 +21,11 @@ class TaskSerializer(serializers.ModelSerializer):
     def get_is_owner(self, obj):
         request = self.context['request']
         return request.user == obj.owner
-    
+
     def get_deadline_info(self, obj):
         """
-        Generates a new field containing information if the deadline is less than 2 days away
+        Generates a new field containing information if the deadline is
+        less than 2 days away
         """
         future_deadline = obj.deadline
         if future_deadline:
@@ -100,7 +101,6 @@ class TaskSerializer(serializers.ModelSerializer):
             else:
                 return "Miscellaneous task"
 
-
     class Meta:
         model = Task
         fields = [
@@ -118,6 +118,6 @@ class TaskSerializer(serializers.ModelSerializer):
             'labels',
             'active',
             'deadline_info',
-            'goal_deadline_info',            
+            'goal_deadline_info',
             'context'
         ]

@@ -26,6 +26,11 @@ All code has been passed through a Python Linter.
 | | tests.py | No errors |
 | | urls.py | No errors |
 | |  views.py | No errors |
+| task | models.py | No errors |
+| | serializers.py | No errors |
+| | tests.py | No errors |
+| | urls.py | No errors |
+| |  views.py | No errors |
 
 [Return to contents list](#contents)
 

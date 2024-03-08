@@ -69,7 +69,8 @@ class TaskList(generics.ListCreateAPIView):
         deadline and then created_by
         """
         return self.request.user.task.all()
-    
+
+
 class TaskDetail(generics.RetrieveUpdateDestroyAPIView):
     """
     View to return a specific task where pk will be the id of the task
