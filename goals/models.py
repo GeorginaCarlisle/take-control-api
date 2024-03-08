@@ -25,7 +25,7 @@ class Goal(models.Model):
         related_name="nested_goal")
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-    active = models.BooleanField(default=False)
+    active = models.BooleanField(default=True)
     deadline = models.DateTimeField(null=True, blank=True)
     title = models.CharField(max_length=50)
     description = models.CharField(max_length=100, blank=True, null=True)
