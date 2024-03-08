@@ -26,7 +26,7 @@ class FocusSerializer(serializers.ModelSerializer):
             )
         if value.image.height > 4096:
             raise serializers.ValidationError(
-                'Image height larger tahn 4096px'
+                'Image height larger than 4096px'
             )
         return value
 
