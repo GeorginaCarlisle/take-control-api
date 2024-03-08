@@ -7,7 +7,8 @@ from take_control_api.permissions import OwnerOnly
 class ListFilter(filters.BaseFilterBackend):
     """
     Custom filter to filter the task list by:
-    active, today
+    active, today, achieved, miscellaneous tasks,
+    focus day-to-day tasks
     """
     def filter_queryset(self, request, queryset, view):
         active = request.query_params.get('active')
@@ -25,6 +26,13 @@ class ListFilter(filters.BaseFilterBackend):
             queryset = queryset.filter(achieved=True)
         elif achieved == 'False':
             queryset = queryset.filter(achieved=False)
+        focus = request.query_params.get('focus')
+        if focus:
+            if focus == 'None':
+                queryset = queryset.filter(focus=None)
+            else:
+                queryset = queryset.filter(focus=focus, goal=None)
+            
         return queryset
 
 class TaskList(generics.ListCreateAPIView):

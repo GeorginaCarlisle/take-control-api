@@ -140,10 +140,31 @@ class TaskListViewTests(APITestCase):
 
     def test_filter_tasks_by_achieved(self):
         """
-        Logged in user can request only their today tasks
+        Logged in user can request only their achieved tasks
         """
         self.client.login(username='SecondTester', password='word')
         response = self.client.get('/tasks/?achieved=True')
+        number_tasks_returned = response.data['count']
+        self.assertEqual(number_tasks_returned, 1)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+    def test_filter_by_miscellaneous(self):
+        """
+        Logged in user can request only their tasks with no focus
+        """
+        self.client.login(username='SecondTester', password='word')
+        response = self.client.get('/tasks/?focus=None')
+        number_tasks_returned = response.data['count']
+        self.assertEqual(number_tasks_returned, 1)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+    def test_filter_by_focus_day_to_day(self):
+        """
+        Logged in user can request all the day-to-day tasks from
+        one of their focus areas
+        """
+        self.client.login(username='SecondTester', password='word')
+        response = self.client.get('/tasks/?focus=2')
         number_tasks_returned = response.data['count']
         self.assertEqual(number_tasks_returned, 1)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
