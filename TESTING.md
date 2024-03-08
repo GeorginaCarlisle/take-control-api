@@ -100,6 +100,44 @@ Walkthrough api, which works correctly from frontend also fails in the same way.
 Key notes:
 Walkthrough api, which works correctly from frontend also fails in the same way.
 
+### Task model
+
+| url | http request | expected outcome | result |
+| --- | --- | --- | --- |
+| tasks/ | GET | Unauthorized error for logged out users | PASS |
+| | | List all logged in user's tasks and non of anyone elses | PASS |
+| | | Tasks ordered by deadline first and then by created_at | PASS |
+| tasks/ | POST | New task created for logged in user | PASS |
+| | | Error for empty name field | PASS |
+| | | Error for over 100 characters in name field | PASS |
+| tasks/?active=True | GET | List all user's active tasks | PASS |
+| tasks/?active=False | GET | List all user's non-active tasks | PASS |
+| tasks/?today=True | GET | List all user's today tasks | PASS |
+| tasks/?today=False | GET | List all user's non-today tasks | PASS |
+| tasks/?achieved=True | GET | List all user's achieved tasks | PASS |
+| tasks/?achieved=False | GET | List all user's not-achieved tasks | PASS |
+| tasks/?today=True&achieved=False | GET | List all user's today tasks that haven't been achieved | PASS |
+| tasks/?focus=None | GET | List all user's miscellaneous tasks | PASS |
+| tasks/?focus=<> | GET | List all user's tasks for a given focus | PASS |
+| tasks/?goal=None | GET | List all user's tasks without a goal | PASS |
+| tasks/?goal=<> | GET | List all user's tasks for a given goal | PASS |
+| tasks/?focus=<>&goal=None | GET | List all user's day-to-day tasks for a given focus | PASS |
+| tasks/?ordering=updated_at | GET | List all user's tasks in order of updated_at | PASS |
+| tasks/?ordering=focus__rank | GET | List all user's tasks in order of thier linked focus rank | PASS |
+| tasks/?ordering=goal__deadline | GET | List all user's tasks in order of their linked goal's deadline | PASS |
+| tasks/?ordering=deadline | GET | List all user's tasks in order of deadline | PASS |
+| tasks/?ordering=created_at | GET | List all user's tasks in oreder of created_at | PASS |
+| tasks/<int:pk> | GET | Invalid task request returns 404 | PASS |
+| | | Logged in user can get their task | PASS |
+| | | Logged in user trying to get a task that doesn't belong to them returns 403 error | PASS |
+| | | Logged out user cannot make get request 401 error | PASS |
+| | PUT | Logged in user can edit their task | Fail in deployed API |
+| | PATCH | Logged in user can edit their task | Fail in deployed API |
+| | DELETE | Logged in user can delete their task | Fail in deployed API |
+
+Key notes:
+Walkthrough api, which works correctly from frontend also fails in the same way.
+
 [Return to contents list](#contents)
 
 ## Automated Testing
@@ -177,7 +215,8 @@ The tests don't cover the following due to the extra complexity and time needed 
 | test_filter_tasks_by_today | Logged in user can request only their today tasks | Pass |
 | test_filter_tasks_by_achieved | Logged in user can request only their achieved tasks | Pass |
 | test_filter_by_miscellaneous | Logged in user can request only their tasks with no focus | Pass |
-| test_filter_by_focus_day_to_day | Logged in user can request all the day-to-day tasks from one of their focus areas | Pass |
+| test_filter_by_focus | Logged in user can request all the tasks from one of their focus areas | Pass |
+| test_filter_by_no_goal | Logged in user can request all tasks without a goal | Pass |
 | test_filter_by_goal | Logged in user can request all tasks linked to a goal | Pass |
 
 ### TaskDetailView
