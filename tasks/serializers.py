@@ -1,6 +1,6 @@
 import os
 from rest_framework import serializers
-from datetime import datetime, timezone
+from datetime import datetime, timezone, date, timedelta
 from .models import Task
 from focus.models import Focus
 from goals.models import Goal
@@ -31,12 +31,22 @@ class TaskSerializer(serializers.ModelSerializer):
             today_naive = datetime.now()
             today_aware = today_naive.replace(tzinfo=timezone.utc)
             days_remaining = (future_deadline - today_aware).days
-            if days_remaining == 0:
-                return "Due Today!!"
-            elif days_remaining == 1:
-                return "Due Tomorrow!!"
+            easy_date = future_deadline.strftime('%d/%m/%y')
+            if days_remaining < -1:
+                return f'OVERDUE!! {easy_date}'
+            elif days_remaining < 3:
+                today = date.today()
+                today_day = today.day
+                deadline_day = future_deadline.day
+                if today_day == deadline_day:
+                    return f'DUE TODAY {easy_date}'
+                tomorrow = today + timedelta(days=1)
+                tomorrow_day = tomorrow.day
+                if deadline_day == tomorrow_day:
+                    return f'Due tomorrow {easy_date}'
+                else:
+                    return f'Due {easy_date}'
             else:
-                easy_date = future_deadline.strftime('%d/%m/%y')
                 return f'Due {easy_date}'
         else:
             return None
@@ -52,10 +62,23 @@ class TaskSerializer(serializers.ModelSerializer):
                 today_aware = today_naive.replace(tzinfo=timezone.utc)
                 days_remaining = (goal_deadline - today_aware).days
                 easy_date = goal_deadline.strftime('%d/%m/%y')
-                if days_remaining<=7:
-                    return f'due on the {easy_date} only {days_remaining} days to go'
+
+                if days_remaining < -1:
+                    return f'OVERDUE!! {easy_date}'
+                elif days_remaining < 3:
+                    today = date.today()
+                    today_day = today.day
+                    deadline_day = goal_deadline.day
+                    if today_day == deadline_day:
+                        return f'DUE TODAY {easy_date}'
+                    tomorrow = today + timedelta(days=1)
+                    tomorrow_day = tomorrow.day
+                    if deadline_day == tomorrow_day:
+                        return f'DUE TOMORROW {easy_date}'
+                    else:
+                        return f'due {easy_date}'
                 else:
-                    return f'due on the {easy_date}'
+                    return f'due {easy_date}'
             else:
                 return None
         else:
