@@ -167,18 +167,26 @@ class TaskListViewTests(APITestCase):
         self.assertEqual(number_tasks_returned, 1)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
-    def test_filter_by_focus_day_to_day(self):
+
+    def test_filter_by_focus(self):
         """
-        Logged in user can request all the day-to-day tasks from
+        Logged in user can request all the tasks from
         one of their focus areas
         """
         self.client.login(username='SecondTester', password='word')
         response = self.client.get('/tasks/?focus=2')
         number_tasks_returned = response.data['count']
-        results = response.data['results']
-        task_name = results[0]['name']
-        self.assertEqual(task_name, 'Second focus today achieved')
-        self.assertEqual(number_tasks_returned, 1)
+        self.assertEqual(number_tasks_returned, 2)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+    def test_filter_by_no_goal(self):
+        """
+        Logged in user can request all tasks without a goal
+        """
+        self.client.login(username='SecondTester', password='word')
+        response = self.client.get('/tasks/?goal=None')
+        number_tasks_returned = response.data['count']
+        self.assertEqual(number_tasks_returned, 2)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
     def test_filter_by_goal(self):

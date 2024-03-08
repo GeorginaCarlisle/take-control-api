@@ -31,10 +31,13 @@ class ListFilter(filters.BaseFilterBackend):
             if focus == 'None':
                 queryset = queryset.filter(focus=None)
             else:
-                queryset = queryset.filter(focus=focus, goal=None)
+                queryset = queryset.filter(focus=focus)
         goal = request.query_params.get('goal')
         if goal:
-            queryset = queryset.filter(goal=goal)
+            if goal == 'None':
+                queryset = queryset.filter(goal=None)
+            else:
+                queryset = queryset.filter(goal=goal)
         return queryset
 
 
