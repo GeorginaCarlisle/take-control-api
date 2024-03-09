@@ -17,7 +17,7 @@ class Focus(models.Model):
     rank = models.IntegerField(blank=True, null=True)
     why = models.TextField(blank=True, null=True)
     image = models.ImageField(
-        upload_to='images/', default='../default_post_icuydr', blank=True
+        upload_to='images/', default='../default-focus_bpca53', blank=True
     )
 
     class Meta:

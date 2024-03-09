@@ -333,7 +333,7 @@ See [TESTING.md](TESTING.md) for all testing and validation.
 | 2 | Default permission 'IsAuthenticated' was preventing unauthenticated users from seeing the root route message and for being able to send a register or login request | First I removed this permission, this solved the initial problem but caused further problems with the list view trying to find a focus for an annoymonous user. I then went back to the django documentation learning about the permission_classes decorators and also the dj-rest-auth documentation. | Default permission reinstated and instead overridden where needed. The root_route overridden with a permission_classes decorator and the AllowAny permission. The registration paths overridden in settings.py within REST_AUTH. This also seemed to fix the login path too. |
 | 3 | The FocusListView for the deployed API is returning the list in the complete opposite order to development. | Research suggested that this might be due to how the production and development databases handle ordering differently. | Queryset code in the view changed. Production now correct and development wrong. |
 | 4 | Attempting to calculate the difference between datetime.(now) and a date held in the database threw a TypeError: can't subtract offset-naive and offset-aware datetimes. | I researched further about the datetime object learning the difference between naive and aware. I then searched for ways to convert datetime.now into an aware datetime object with the timezone utc, as this was what the timezone of the api is set to. | Use of the replace() method and the sub class tzinfo to give datetime.now() a timezone and make it aware. The caclulation now works without error. |
-| 5 | Attempting to pass the image from an instance of the focus model into an additional field created in the task serializer, where the task and the focus shared a foreign key relationship threw the following error: UnicodeDecodeError: 'utf-8' codec can't decode byte 0xff in position 0: invalid start byte | Error traced to the serializer being unable to handle the data tsored in the focus models image field. Depsite research I could gain no further understanding or solution. | Decision to handle the required functionality on the frontend for now. |
+| 5 | Attempting to pass the image from an instance of the focus model into an additional field created in the task serializer, where the task and the focus shared a foreign key relationship threw the following error: UnicodeDecodeError: 'utf-8' codec can't decode byte 0xff in position 0: invalid start byte | Error traced to the serializer being unable to handle the data stored in the focus models image field. Depsite research I could gain no further understanding or solution. | Decision to handle the required functionality on the frontend for now. |
 
 [Return to contents list](#contents)
 
@@ -441,9 +441,9 @@ The following code from [Code Institute's](https://codeinstitute.net/) Django re
 
 ### Images
 
-[Code Institute](https://codeinstitute.net/) - The default post image from the "Django Rest" walkthrough has been used here as the default focus image.
-
 Image of a person writing in a notebook by [Ylanite Koppens](https://www.pexels.com/photo/person-holding-silver-retractable-pen-in-white-ruled-book-796603/) - has been used as the image associated with all miscellaneous tasks.
+
+Image looking through a camera lens by [Marek](https://www.pexels.com/photo/person-holding-black-camera-lens-339379/) - has been used as the default focus image.
 
 [Return to contents list](#contents)
 
