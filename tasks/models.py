@@ -33,7 +33,10 @@ class Task(models.Model):
     name = models.CharField(max_length=100)
     deadline = models.DateTimeField(null=True, blank=True)
     labels = models.ManyToManyField(Label, blank=True)
-    active = models.BooleanField
+    active = models.BooleanField (default=True)
+    image = models.ImageField(
+        default='../miscellaneous-tasks_b6f2gl', blank=True
+    )
 
     class Meta:
         ordering = ['-created_at']

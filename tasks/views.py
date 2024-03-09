@@ -1,4 +1,4 @@
-from .models import Task
+from .models import Task, Focus
 from .serializers import TaskSerializer
 from rest_framework import generics, filters
 from take_control_api.permissions import OwnerOnly
@@ -63,7 +63,14 @@ class TaskList(generics.ListCreateAPIView):
         """
         Adds owner data to the object before it is saved
         """
-        serializer.save(owner=self.request.user)
+        owner=self.request.user
+        focus_id = self.request.data.get('focus')
+        if focus_id:
+            focus = Focus.objects.get(pk=focus_id)
+            image = focus.image
+        else :
+            image = '../miscellaneous-tasks_b6f2gl'
+        serializer.save(image=image, owner=owner)
 
     def get_queryset(self):
         """

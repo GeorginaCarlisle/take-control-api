@@ -119,5 +119,6 @@ class TaskSerializer(serializers.ModelSerializer):
             'active',
             'deadline_info',
             'goal_deadline_info',
-            'context'
+            'context',
+            'image'
         ]
