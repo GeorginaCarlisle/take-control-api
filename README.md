@@ -158,6 +158,7 @@ Fields held within the database:
 | achieved | default: false | can change to true |
 | deadline | optional | DateTime |
 | name | required | text of max characters 100 |
+| image | automatically generated | Either takes image from linked focus instance or adds default image |
 
 Extra fields generated and returned with a GET request:
 
