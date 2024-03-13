@@ -179,6 +179,12 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+# Code below copied from stackoverflow to solve bug #1
+# https://stackoverflow.com/questions/45006190/connectionrefusederror-in-django-rest-api-while-registration-process
+
+ACCOUNT_EMAIL_VERIFICATION = 'none'
+ACCOUNT_AUTHENTICATION_METHOD = 'username'
+ACCOUNT_EMAIL_REQUIRED = False
 
 # Internationalization
 # https://docs.djangoproject.com/en/3.2/topics/i18n/
