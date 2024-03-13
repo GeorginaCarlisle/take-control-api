@@ -5,8 +5,8 @@ Developer: Georgina Carlisle
 An API providing full CRUD functionality for task management data that includes setting focus areas and goals. This API utilises the Django Rest Framework and was created to provide backend functionality for the Take Control application.
 
 [Take Control API live link](https://take-control-api-d106d6135431.herokuapp.com/)
+[Take Control App live link](https://take-control-frontend-32659c908a57.herokuapp.com/)
 [Take Control App repository](https://github.com/GeorginaCarlisle/take-control-frontend-app)
-Take Control App live link:
 
 ## Contents
 
@@ -31,6 +31,8 @@ Take Control App live link:
 [Cloning this repository](#cloning-this-repository)
 
 [Forking a branch](#forking-a-branch)
+
+[Connecting to this API](#connecting-to-this-api)
 
 [Credits](#credits)
 
@@ -427,6 +429,14 @@ Instructions to fork directly from an issue:
 2 - Partway down the right hand side (on desktop) you should see the heading 'Development' and under this a link to 'create a branch for this issue or link a pull request'.
 
 3 - Click on the link to create a forked branch that is tied to the issue.
+
+[Return to contents list](#contents)
+
+## Connecting to this API
+
+In order to connect to this API:
+
+1 - Add the deployed url of frontend you wish to connect as a config var to the API within its Heroku deployment settings with the key CLIENT_ORIGIN. Make sure their is no / at the end of the url.
 
 [Return to contents list](#contents)
 
