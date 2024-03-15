@@ -5,7 +5,9 @@ Developer: Georgina Carlisle
 An API providing full CRUD functionality for task management data that includes setting focus areas and goals. This API utilises the Django Rest Framework and was created to provide backend functionality for the Take Control application.
 
 [Take Control API live link](https://take-control-api-d106d6135431.herokuapp.com/)
+
 [Take Control App live link](https://take-control-frontend-32659c908a57.herokuapp.com/)
+
 [Take Control App repository](https://github.com/GeorginaCarlisle/take-control-frontend-app)
 
 ## Contents
@@ -320,6 +322,8 @@ Python
 
 [CI Python Linter](https://pep8ci.herokuapp.com/) - Used to validate all the python code.
 
+[Chatgpt](https://chat.openai.com/) - Used to help troubleshoot bugs. See [bugs](#bugs-and-fixes) 3 and 7.
+
 [Return to contents list](#contents)
 
 ## Testing and Validation
@@ -334,10 +338,11 @@ See [TESTING.md](TESTING.md) for all testing and validation.
 | --- | --- | --- | --- |
 | 1 | In development mode with local host and db.sqlite3, when registering a new user there is a connection refused error originating in socket.py. Note: Form validation does work and a user is created. | Time was spent checking all related settings and exploring the error code. I also manufactored the same scenario using my walkthrough code (which I know works as expected with the frontend) and it also threw the same error. This led me to the thought that this might be directly connected with the db.sqlite3 database and the local host set-up and may not caused any issues in production. I decided to leave and see what happened on deployment. The deployed API created a new user no problem but threw a 500 error. The error also persisted when calling the endpoint from the frontend. Support from my mentor and [stack overflow](https://stackoverflow.com/questions/45006190/connectionrefusederror-in-django-rest-api-while-registration-process) was gained leading to a solution. | Error was being caused by the DRF automatically trying to send a verification email. Settings have now been included in settings.py to prevent this from happening. |
 | 2 | Default permission 'IsAuthenticated' was preventing unauthenticated users from seeing the root route message and for being able to send a register or login request | First I removed this permission, this solved the initial problem but caused further problems with the list view trying to find a focus for an annoymonous user. I then went back to the django documentation learning about the permission_classes decorators and also the dj-rest-auth documentation. | Default permission reinstated and instead overridden where needed. The root_route overridden with a permission_classes decorator and the AllowAny permission. The registration paths overridden in settings.py within REST_AUTH. This also seemed to fix the login path too. |
-| 3 | The FocusListView for the deployed API is returning the list in the complete opposite order to development. | Research suggested that this might be due to how the production and development databases handle ordering differently. | Queryset code in the view changed. Production now correct and development wrong. |
+| 3 | The FocusListView for the deployed API is returning the list in the complete opposite order to development. | Troubleshooting with [Chatgpt](https://chat.openai.com/) suggested that this might be due to how the production and development databases handle ordering differently. | Queryset code in the view changed. Production now correct and development wrong. |
 | 4 | Attempting to calculate the difference between datetime.(now) and a date held in the database threw a TypeError: can't subtract offset-naive and offset-aware datetimes. | I researched further about the datetime object learning the difference between naive and aware. I then searched for ways to convert datetime.now into an aware datetime object with the timezone utc, as this was what the timezone of the api is set to. | Use of the replace() method and the sub class tzinfo to give datetime.now() a timezone and make it aware. The caclulation now works without error. |
 | 5 | Attempting to pass the image from an instance of the focus model into an additional field created in the task serializer, where the task and the focus shared a foreign key relationship threw the following error: UnicodeDecodeError: 'utf-8' codec can't decode byte 0xff in position 0: invalid start byte | Error traced to the serializer being unable to handle the data stored in the focus models image field. Idea to testing adding the image in at a different point. | Creating an image field within the task model, with a default image and passing in the focus image at the point the task is created worked. No issues. |
 | 6 | When logging out on the frontend, everything appeared to be working as expected, however on accessing any logged in user pages everything was working as though the last user was still logged in. | Going back through the walkthrough information about fixing a [dj-rest-auth logout bug](https://github.com/iMerica/dj-rest-auth/issues/246) allowed me to find my mistake. | Ensuring that the path to the logout view sits above the other dj-rest-auth paths, it had been sitting below and therefore not being utilised. |
+| 7 | A GET request from the frontend to /tasks/?focus=2 was returning a 500 error | Tested a straight GET request to /tasks/ this also returned 500 error. Ran automatic tests, these passed. Tested /tasks/ directly within the deployed api, this pointed to a programming error stating column tasks__task.active does not exist. I remembered that this field was a late addition and a number of task instances had already been created by this point. Troubleshooting with [chatgpt](https://chat.openai.com/) suggested that given the field had a default value, as long as migrations had been made the late addition shouldn't cause any issue. I connected to the deployment database, ran migrations and redeployed. This issue persisted. | New database created, connected to and all migrations applied. Requests now going through. |
 
 [Return to contents list](#contents)
 
