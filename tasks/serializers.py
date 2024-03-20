@@ -34,21 +34,21 @@ class TaskSerializer(serializers.ModelSerializer):
             days_remaining = (future_deadline - today_aware).days
             easy_date = future_deadline.strftime('%d/%m/%y')
             if days_remaining < -1:
-                return f'OVERDUE!! {easy_date}'
+                return f'Task OVERDUE!! {easy_date}'
             elif days_remaining < 3:
                 today = date.today()
                 today_day = today.day
                 deadline_day = future_deadline.day
                 if today_day == deadline_day:
-                    return f'DUE TODAY {easy_date}'
+                    return f'due TODAY {easy_date}'
                 tomorrow = today + timedelta(days=1)
                 tomorrow_day = tomorrow.day
                 if deadline_day == tomorrow_day:
-                    return f'Due tomorrow {easy_date}'
+                    return f'due tomorrow {easy_date}'
                 else:
-                    return f'Due {easy_date}'
+                    return f'due {easy_date}'
             else:
-                return f'Due {easy_date}'
+                return f'due {easy_date}'
         else:
             return None
 
@@ -65,21 +65,21 @@ class TaskSerializer(serializers.ModelSerializer):
                 easy_date = goal_deadline.strftime('%d/%m/%y')
 
                 if days_remaining < -1:
-                    return f'OVERDUE!! {easy_date}'
+                    return f'GOAL OVERDUE!! {easy_date}'
                 elif days_remaining < 3:
                     today = date.today()
                     today_day = today.day
                     deadline_day = goal_deadline.day
                     if today_day == deadline_day:
-                        return f'DUE TODAY {easy_date}'
+                        return f'Goal due TODAY {easy_date}'
                     tomorrow = today + timedelta(days=1)
                     tomorrow_day = tomorrow.day
                     if deadline_day == tomorrow_day:
-                        return f'DUE TOMORROW {easy_date}'
+                        return f'Goal due TOMORROW {easy_date}'
                     else:
-                        return f'due {easy_date}'
+                        return f'Goal due {easy_date}'
                 else:
-                    return f'due {easy_date}'
+                    return f'Goal due {easy_date}'
             else:
                 return None
         else:
@@ -94,12 +94,12 @@ class TaskSerializer(serializers.ModelSerializer):
         if obj.goal:
             goal_id = obj.goal.id
             goal = Goal.objects.get(id=goal_id)
-            return goal.title
+            return f'A step towards {goal.title}'
         else:
             if obj.focus:
-                return f'Day-to-day {obj.focus.name} task'
+                return f'A day-to-day {obj.focus.name} task'
             else:
-                return "Miscellaneous task"
+                return "A miscellaneous task"
 
     class Meta:
         model = Task
