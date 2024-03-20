@@ -34,21 +34,21 @@ class TaskSerializer(serializers.ModelSerializer):
             days_remaining = (future_deadline - today_aware).days
             easy_date = future_deadline.strftime('%d/%m/%y')
             if days_remaining < -1:
-                return f'OVERDUE!! {easy_date}'
+                return f'Task OVERDUE!! {easy_date}'
             elif days_remaining < 3:
                 today = date.today()
                 today_day = today.day
                 deadline_day = future_deadline.day
                 if today_day == deadline_day:
-                    return f'due TODAY {easy_date}'
+                    return f'Task due TODAY {easy_date}'
                 tomorrow = today + timedelta(days=1)
                 tomorrow_day = tomorrow.day
                 if deadline_day == tomorrow_day:
-                    return f'due tomorrow {easy_date}'
+                    return f'Task due tomorrow {easy_date}'
                 else:
-                    return f'due {easy_date}'
+                    return f'Task due {easy_date}'
             else:
-                return f'due {easy_date}'
+                return f'Task due {easy_date}'
         else:
             return None
 
