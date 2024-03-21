@@ -146,7 +146,7 @@ Endpoints for the goal model. Note multiple filter and ordering options can be g
 
 ### Task Model
 
-Users can store their tasks. Tasks can be linked directly to a focus, to a goal or be unlinked. Tasks can be given a description and have the following set as true or false: active, today or achieved. A number of extra fields are also returned with a task. Multiple options for filtering and ordering are included.
+Users can store their tasks. Tasks can be linked directly to a focus, to a goal or be unlinked. Tasks can be given a description and have the following set as true or false: active, today or achieved. A number of extra fields are also returned with a task. Multiple options for filtering and ordering are included as well as a search filter.
 
 Fields held within the database:
 
@@ -191,6 +191,7 @@ Endpoints for the task model. Note multiple filter and ordering options can be g
 | tasks/?ordering=goal__deadline | GET | List all user's tasks in order of their linked goal's deadline |
 | tasks/?ordering=deadline | GET | List all user's tasks in order of deadline |
 | tasks/?ordering=created_at | GET | List all user's tasks in order of created_at |
+| tasks/?search= | GET | List all user's tasks where the search parameter matches either the task name, linked focus name or linked goal title |
 | tasks/ | POST | Create a new task |
 | tasks/id | GET | Get a specific task using it's id |
 | tasks/id | PUT | Update a focus area. All details needed |

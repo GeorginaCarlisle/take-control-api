@@ -201,6 +201,19 @@ class TaskListViewTests(APITestCase):
         self.assertEqual(number_tasks_returned, 1)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
+    def test_filter_by_search(self):
+        """
+        Logged in user can filter tasks by search query
+        """
+        self.client.login(username='SecondTester', password='word')
+        response = self.client.get('/tasks/?search=paused')
+        number_tasks_returned = response.data['count']
+        results = response.data['results']
+        task_name = results[0]['name']
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(number_tasks_returned, 1)
+        self.assertEqual(task_name, 'Second paused goal')
+
 
 class TaskDetailViewTests(APITestCase):
     """

@@ -134,6 +134,7 @@ Walkthrough api, which works correctly from frontend also fails in the same way.
 | tasks/?ordering=goal__deadline | GET | List all user's tasks in order of their linked goal's deadline | PASS |
 | tasks/?ordering=deadline | GET | List all user's tasks in order of deadline | PASS |
 | tasks/?ordering=created_at | GET | List all user's tasks in order of created_at | PASS |
+| tasks/?search= | GET | List all user's tasks where the search parameter matches either the task name, linked focus name or linked goal title | PASS |
 | tasks/<int:pk> | GET | Invalid task request returns 404 | PASS |
 | | | Logged in user can get their task | PASS |
 | | | Logged in user trying to get a task that doesn't belong to them returns 403 error | PASS |
@@ -225,6 +226,7 @@ The tests don't cover the following due to the extra complexity and time needed 
 | test_filter_by_focus | Logged in user can request all the tasks from one of their focus areas | Pass |
 | test_filter_by_no_goal | Logged in user can request all tasks without a goal | Pass |
 | test_filter_by_goal | Logged in user can request all tasks linked to a goal | Pass |
+| test_filter_by_search | Logged in user can filter tasks by search query | Pass |
 
 ### TaskDetailView
 

@@ -50,6 +50,7 @@ class TaskList(generics.ListCreateAPIView):
     filter_backends = [
         ListFilter,
         filters.OrderingFilter,
+        filters.SearchFilter,
     ]
     ordering_fields = [
         'updated_at',
@@ -57,6 +58,11 @@ class TaskList(generics.ListCreateAPIView):
         'goal__deadline',
         'deadline',
         'created_at',
+    ]
+    search_fields = [
+        'name',
+        'focus__name',
+        'goal__title'
     ]
 
     def perform_create(self, serializer):
