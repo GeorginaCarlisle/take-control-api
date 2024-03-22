@@ -38,7 +38,7 @@ class GoalSerializer(serializers.ModelSerializer):
         more than 7 days away.
         """
         days_remaining = self.get_days_remaining(obj)
-        if days_remaining:
+        if days_remaining is not None:
             if days_remaining <= 7:
                 return True
             else:
