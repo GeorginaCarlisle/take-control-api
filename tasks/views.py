@@ -69,12 +69,12 @@ class TaskList(generics.ListCreateAPIView):
         """
         Adds owner data to the object before it is saved
         """
-        owner=self.request.user
+        owner = self.request.user
         focus_id = self.request.data.get('focus')
         if focus_id:
             focus = Focus.objects.get(pk=focus_id)
             image = focus.image
-        else :
+        else:
             image = '../miscellaneous-tasks_b6f2gl'
         serializer.save(image=image, owner=owner)
 
@@ -84,7 +84,8 @@ class TaskList(generics.ListCreateAPIView):
         and only those owned by the user. Within this order by
         deadline and then created_by
         """
-        return self.request.user.task.all().order_by('deadline', 'goal__deadline')
+        return self.request.user.task.all().order_by(
+            'deadline', 'goal__deadline')
 
 
 class TaskDetail(generics.RetrieveUpdateDestroyAPIView):
