@@ -36,7 +36,8 @@ All code has been passed through a Python Linter.
 | | urls.py | No errors |
 | |  views.py | No errors |
 
-The following errors were returned for settings.py:
+The following errors were returned for settings.py. These are lines that cannot be shortened.
+
 ![Screenshot showing 5 E501 line too long errors](documentation/errors-in-settings-file.png)
 
 [Return to contents list](#contents)
@@ -54,9 +55,6 @@ Manual tests for all Endpoints have been carried out on the deployed site. Where
 | dj-rest-auth/login/ | POST | User Authenticated | PASS | PASS |
 | | | Invalid fields handled | PASS | PASS |
 | dj-rest-auth/logout/ | POST | User logged out and token object deleted | PASS | PASS |
-
-Key notes:
-While registration updates the database correctly a 500 error is thrown. See bug #1 in main readme.
 
 ### Focus model
 

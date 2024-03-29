@@ -14,6 +14,8 @@ An API providing full CRUD functionality for task management data that includes 
 
 [Features](#features)
 
+[Future Features](#future-features)
+
 [Design](#design)
 
 [Agile Methodology](#agile-methodology)
@@ -136,8 +138,8 @@ Endpoints for the goal model. Note multiple filter and ordering options can be g
 | --- | --- | --- |
 | goals/ | GET | Returns a list of user's focus areas ordered by deadline first and then by created_at |
 | goals/?parent=None | GET | Returns a list of all the user's goals without a parent (aren't nested) |
-| goals/?parent_id=<> | GET | Returns a list of all user's goals which are nested in a given parent |
-| goals/?focus_id=<> | GET | Returns a list of all user's goals with given focus |
+| goals/?parent_id= | GET | Returns a list of all user's goals which are nested in a given parent |
+| goals/?focus_id= | GET | Returns a list of all user's goals with given focus |
 | goals/ | POST | Create a new focus area |
 | goals/id | GET | Get a specific focus area using it's id |
 | goals/id | PUT | Update a focus area. All details needed |
@@ -163,6 +165,7 @@ Fields held within the database:
 | deadline | optional | DateTime |
 | name | required | text of max characters 100 |
 | image | automatically generated | Either takes image from linked focus instance or adds default image |
+| labels | optional | This is a many to many relationship, with the labels model not yet fully operational |
 
 Extra fields generated and returned with a GET request:
 
@@ -200,6 +203,16 @@ Endpoints for the task model. Note multiple filter and ordering options can be g
 
 [Return to contents list](#contents)
 
+## Future Features
+
+The following will be added in future iterations of this project:
+
+- Endpoints for the label model. This will allow users to create custom labels (with name and colour) which they can add to their tasks.
+- Repeated model and endpoints. This will allow users to categorise tasks as repeated and provide information on the frequency of repetition.
+- Order model and endpoints. This will allow users to give tasks a specific order number.
+- Team model and endpoints. This will allow users to create a team containing other users.
+- Permissions model and endpoints. This will allow users to set who out of their team has read permission and who has write perission for a focus area.
+
 ## Design
 
 ### Aim
@@ -216,7 +229,7 @@ Secret keys etc. will be hidden and Debug set to False for the deployed api.
 
 ### Scope
 
-The scope of this API links directly to the user stories set out in the Take Control repository. From these the following key models were defined:
+The scope of this API links directly to the user stories set out in the [Take Control repository](https://github.com/GeorginaCarlisle/take-control-frontend-app). From these the following key models were defined:
 
 - User (In-built Django user model)
 - Focus
@@ -224,15 +237,19 @@ The scope of this API links directly to the user stories set out in the Take Con
 - Task
 - Label
 
+Notes on current iteration: The Label model while created does not currently have any endpoints. These will added in future iterations.
+
 ### Structure
 
 The following documents show planning for the models, including extra helper models needed, as well as planning for all endpoints including associated serializers, permissions and views. These plans were developed in parallel with the scope, structure and skeleton design planes for the linked application.
 
 Please note that the end point plan does not contain endpoints for the team and permissions models shown in the model plan. The associated functionality was prioritised as a could-have, with further planning to be completed only following completion of all must-have and should-have functionality and should time allow.
 
-[Model Plan](documentation/api-model-plan.pdf)
+![Model Plan](documentation/api-model-plan.png)
 
 [Endpoint Plan](documentation/api-endpoint-plan.pdf)
+
+Notes on current iteration: The following models will be created during future iterations: repeated, order, team and permissions. Endpoints for the label model will also be added in future iterations.
 
 [Return to contents list](#contents)
 
@@ -244,7 +261,7 @@ Agile values and principles were followed in the creation of this API in partner
 
 As both the API and application were to be built in tandom, the decision was made to chunk the endpoints needed from the api by MOSCOW prioritisation.
 
-Each chunk was then fully completed before moving onto building the associated Epics within the application. Once all the associated must-haves and any none api dependent must-haves were completed a decision was taken in view of time how many should-haves and could-haves to complete. Only then did I returned to working on the api to build the next chunk.
+Each chunk was then fully completed before moving onto building the associated Epics within the frontend application. Once all the associated must-haves and any none api dependent must-haves were completed a decision was taken in view of time how many should-haves and could-haves to complete. Unfortunately time available only allowed for the must haves to be completed.
 
 Must Have:
 
@@ -344,7 +361,7 @@ See [TESTING.md](TESTING.md) for all testing and validation.
 | 5 | Attempting to pass the image from an instance of the focus model into an additional field created in the task serializer, where the task and the focus shared a foreign key relationship threw the following error: UnicodeDecodeError: 'utf-8' codec can't decode byte 0xff in position 0: invalid start byte | Error traced to the serializer being unable to handle the data stored in the focus models image field. Idea to testing adding the image in at a different point. | Creating an image field within the task model, with a default image and passing in the focus image at the point the task is created worked. No issues. |
 | 6 | When logging out on the frontend, everything appeared to be working as expected, however on accessing any logged in user pages everything was working as though the last user was still logged in. | Going back through the walkthrough information about fixing a [dj-rest-auth logout bug](https://github.com/iMerica/dj-rest-auth/issues/246) allowed me to find my mistake. | Ensuring that the path to the logout view sits above the other dj-rest-auth paths, it had been sitting below and therefore not being utilised. |
 | 7 | A GET request from the frontend to /tasks/?focus=2 was returning a 500 error | Tested a straight GET request to /tasks/ this also returned 500 error. Ran automatic tests, these passed. Tested /tasks/ directly within the deployed api, this pointed to a programming error stating column tasks__task.active does not exist. I remembered that this field was a late addition and a number of task instances had already been created by this point. Troubleshooting with [chatgpt](https://chat.openai.com/) suggested that given the field had a default value, as long as migrations had been made the late addition shouldn't cause any issue. I connected to the deployment database, ran migrations and redeployed. This issue persisted. | New database created, connected to and all migrations applied. Requests now going through. |
-| 8 | When signing in from an iphone mobile, everything appears to work however on then trying to access a further page you are automatically returned to the signin page. | Checked heroku logs and found: Unauthorized: /dj-rest-auth/token/refresh/ Tried on a safari browser from a laptop and issue persisted. Checked slack to see if other students had had this issue. | This is a known issue which stems from cross site tracking and cookies and the project being deployed in separate frontend and backend repos/urls. If time allows I will look at combining both backend and frontend under one terminal. |
+| 8 | Dangerous site warning on first accessing the deployed url. | Slack searched for similar issues faced by other students. | Warning is due to the frontend and backend coming from a different point of origin and the cross site refering involved. Unfortunately time did not allow for combining front and backends under one terminal. This will be undertaken in a future iteration. |
 | 9 | Post requests sent to /tasks/ that don't include an active key and value are being saved as active: False. | Checked that the default for active is true | Due to time constraints and active functionality not currently being needed, this bug will be left for future iterations of the project and the endpoint /tasks/?active=true will not be used until the bug is resolved. |
 
 [Return to contents list](#contents)
@@ -471,7 +488,13 @@ Image looking through a camera lens by [Marek](https://www.pexels.com/photo/pers
 
 ## Acknowledgements
 
-[Code Institute](https://codeinstitute.net/) - The majority of the coding skills, knowledge and understanding showcased in this project have been learnt through the 'Diploma of Full stack software development' that I am completing with Code Institute.
+My family - This project wouldn't be here without the support and understanding of my husband and two young boys.
+
+Fellow students - Providing mutual support and assistance with [bugs #8](#bugs-and-fixes).
+
+My mentor Antonio Rodriguez - Providing support and guidance throughout the creation of this project and assistance with [bug #1](#bugs-and-fixes).
+
+[Code Institute](https://codeinstitute.net/) -  The majority of the coding skills, knowledge and understanding showcased in this project have been learnt through the 'Diploma of Full stack software development' that I am completing with Code Institute.
 
 Django Rest Framework documentation was used throughout the building of this project, in particular to support with:
 
